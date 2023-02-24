@@ -201,3 +201,49 @@ footer nav ul {
 	margin: 2em
 }
 
+.filtres-bloc {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	margin-top: 50px;
+	margin-bottom: 30px;
+}
+
+.btn-tous, .btn-trier-obj,
+.btn-trier-appt, .btn-trier-hotel {
+	font-family: 'Syne';
+	font-weight: 700;
+	font-size: 1.2em;
+	color: #1D6154;
+	text-align: center;
+	white-space: nowrap;
+	border-radius: 60px ;
+	border: solid #1D6154;
+	border-width: 2px;
+	background-color: white;
+	height: 50px;
+	padding-left: 25px;
+	padding-right: 25px;
+	margin-right: 10px;
+	margin-left: 10px;
+}
+
+.btn-tous:hover, .btn-trier-obj:hover,
+.btn-trier-appt:hover, .btn-trier-hotel:hover {
+	font-family: 'Syne';
+	font-weight: 700;
+	font-size: 1.2em;
+	color: white;
+	text-align: center;
+	white-space: nowrap;
+	border-radius: 60px ;
+	border: solid #1D6154;
+	border-width: 2px;
+	background-color: #1D6154;
+	height: 50px;
+	padding-left: 25px;
+	padding-right: 25px;
+	margin-right: 10px;
+	margin-left: 10px;
+}
