@@ -1,10 +1,9 @@
-// const reponse = await fetch("http://localhost:5678/api-docs/");
-// const travaux = await response.json();
+// // Récupération de la gallerie travaux via l'API
 
 const reponse = await fetch("http://localhost:5678/api/works");
 const works = await reponse.json();
 
-// Récupération de la gallerie travaux
+// Lier l'élément gallery en HTML au script JS
 
 const gallery = document.querySelector(".gallery");
 
@@ -12,7 +11,7 @@ const gallery = document.querySelector(".gallery");
 
 gallery.innerHTML = "";
 
-// Afficher les travaux
+// Afficher tous les travaux
 works.forEach(work => {
     const figure = document.createElement("figure");
     const image = document.createElement("img");
@@ -138,3 +137,72 @@ boutonTrierHotels.addEventListener("click", function () {
     });
 });
 
+// Lier les éléments de la modale en HTML au script JS
+
+const modalTrigger = document.querySelectorAll(".modal-trigger");
+const modalClose = document.querySelectorAll(".modal-close");
+const modalOverlay = document.querySelector(".modal");
+
+// Ouvrir la modale
+modalTrigger.forEach(trigger => {
+    trigger.addEventListener("click", () => {
+        const target = document.querySelector(trigger.getAttribute("data-modal-target"));
+        target.setAttribute("aria-hidden", "false");
+        target.setAttribute("aria-modal", "true");
+        modalOverlay.style.display = "flex";
+    });
+});
+
+// Fermer la modale
+modalClose.forEach(close => {
+    close.addEventListener("click", () => {
+        const modal = close.closest(".modal");
+        modal.setAttribute("aria-hidden", "true");
+        modal.setAttribute("aria-modal", "false");
+        modal.style.display = "none";
+    });
+});
+
+// Masquer la modale lorsqu'on clique en dehors de celle-ci
+modalOverlay.addEventListener("click", (e) => {
+    if (e.target === modalOverlay) {
+        modalClose.forEach(close => {
+            const modal = close.closest(".modal");
+            modal.setAttribute("aria-hidden", "true");
+            modal.setAttribute("aria-modal", "false");
+            modal.style.display = "none";
+        });
+    }
+});
+
+// Options login et log out
+
+// Récupération du token dans le local Storage
+
+const user = window.localStorage.getItem("token");
+console.log(user);
+
+// Lier les élements HTML login et logout au script JS
+const login = document.querySelector(".login-tab");
+const logout = document.querySelector(".logout-tab");
+
+// Vérifier si l'utilisateur est connecté
+if (user) {
+// Afficher l'onglet logout
+    logout.style.display = "block";
+} else {
+// Afficher l'onglet login
+    login.style.display = "block";
+}
+
+// Permettre à l'utilisateur de se déconnecter
+
+// activer le click à lors du log-out
+logout.addEventListener("click", function(event) {
+    event.preventDefault();
+    // vider le local storage
+    window.localStorage.clear();
+
+    // basculer vers la page login
+    window.location.href = "login.html";
+});
