@@ -137,44 +137,6 @@ boutonTrierHotels.addEventListener("click", function () {
     });
 });
 
-// Lier les éléments de la modale en HTML au script JS
-
-const modalTrigger = document.querySelectorAll(".modal-trigger");
-const modalClose = document.querySelectorAll(".modal-close");
-const modalOverlay = document.querySelector(".modal");
-
-// Ouvrir la modale
-modalTrigger.forEach(trigger => {
-    trigger.addEventListener("click", () => {
-        const target = document.querySelector(trigger.getAttribute("data-modal-target"));
-        target.setAttribute("aria-hidden", "false");
-        target.setAttribute("aria-modal", "true");
-        modalOverlay.style.display = "flex";
-    });
-});
-
-// Fermer la modale
-modalClose.forEach(close => {
-    close.addEventListener("click", () => {
-        const modal = close.closest(".modal");
-        modal.setAttribute("aria-hidden", "true");
-        modal.setAttribute("aria-modal", "false");
-        modal.style.display = "none";
-    });
-});
-
-// Masquer la modale lorsqu'on clique en dehors de celle-ci
-modalOverlay.addEventListener("click", (e) => {
-    if (e.target === modalOverlay) {
-        modalClose.forEach(close => {
-            const modal = close.closest(".modal");
-            modal.setAttribute("aria-hidden", "true");
-            modal.setAttribute("aria-modal", "false");
-            modal.style.display = "none";
-        });
-    }
-});
-
 // Options login et log out
 
 // Récupération du token dans le local Storage
@@ -190,9 +152,64 @@ const logout = document.querySelector(".logout-tab");
 if (user) {
 // Afficher l'onglet logout
     logout.style.display = "block";
+
+    // faire disparaître le titre "mes projets"
+    const modifProjets = document.querySelector(".mes-projets-titre");
+    modifProjets.innerHTML = "";
+
+    // faire disparaître les filtres
+    const mesFiltres = document.querySelector(".filtres-bloc");
+    mesFiltres.innerHTML = "";
+
+    // code modale
+    // Lier les éléments de la modale en HTML au script JS
+
+    const modalTrigger = document.querySelectorAll(".modal-trigger");
+    const modalClose = document.querySelectorAll(".modal-close");
+    const modalOverlay = document.querySelector(".modal");
+
+    // Ouvrir la modale
+    modalTrigger.forEach(trigger => {
+        trigger.addEventListener("click", () => {
+            const target = document.querySelector(trigger.getAttribute("data-modal-target"));
+            target.setAttribute("aria-hidden", "false");
+            target.setAttribute("aria-modal", "true");
+            modalOverlay.style.display = "flex";
+        });
+    });
+
+    // Fermer la modale
+    modalClose.forEach(close => {
+        close.addEventListener("click", () => {
+            const modal = close.closest(".modal");
+            modal.setAttribute("aria-hidden", "true");
+            modal.setAttribute("aria-modal", "false");
+            modal.style.display = "none";
+        });
+    });
+
+    // Masquer la modale lorsqu'on clique en dehors de celle-ci
+    modalOverlay.addEventListener("click", (e) => {
+        if (e.target === modalOverlay) {
+            modalClose.forEach(close => {
+                const modal = close.closest(".modal");
+                modal.setAttribute("aria-hidden", "true");
+                modal.setAttribute("aria-modal", "false");
+                modal.style.display = "none";
+            });
+        }
+    });
+
 } else {
 // Afficher l'onglet login
     login.style.display = "block";
+
+    const modif = document.querySelectorAll(".modifier");
+    for (let i = 0; i < modif.length; i++) {
+        modif[i].innerHTML ="";
+    }
+    const modifProjets = document.querySelector("#modifier-mes-projets");
+    modifProjets.innerHTML = "";
 }
 
 // Permettre à l'utilisateur de se déconnecter

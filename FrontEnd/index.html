@@ -10,10 +10,12 @@
 	<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Work+Sans&display=swap" rel="stylesheet">
 	<meta name="description" content="">
 	<link rel="stylesheet" href="./assets/style.css">
+	<!-- Kit fontawesome-->
+	<script src="https://kit.fontawesome.com/aaece9f3aa.js" crossorigin="anonymous"></script>
 </head>
 <body>
 <header>
-	<h1>Sophie Bluel <span>Architecte d'inteérieur</span></h1>
+	<h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
 	<nav>
 		<ul>
 			<li>projets</li>
@@ -23,27 +25,50 @@
 		</ul>
 	</nav>
 </header>
+
 <main>
+
 	<section id="introduction">
-		<figure>
+		<figure id="modif-introduction">
 			<img src="./assets/images/sophie-bluel.png" alt="">
-		</figure>
+			<div class="modifier">
+				<button><i class="fa-sharp fa-regular fa-pen-to-square"></i></button>
+				<button>modifier</button>
+			</div>
+		</figure>		
 		<article>
+			<div class="modifier">
+				<button><i class="fa-sharp fa-regular fa-pen-to-square"></i></button>
+				<button>modifier</button>
+			</div>
 			<h2>Designer d'espace</h2>
 			<p>Je raconte votre histoire, je valorise vos idées. Je vous accompagne de la conception à la livraison finale du chantier.</p>
 			<p>Chaque projet sera étudié en commun, de façon à mettre en valeur les volumes, les matières et les couleurs dans le respect de l’esprit des lieux et le choix adapté des matériaux. Le suivi du chantier sera assuré dans le souci du détail, le respect du planning et du budget.</p>
 			<p>En cas de besoin, une équipe pluridisciplinaire peut-être constituée : architecte DPLG, décorateur(trice)</p>
 		</article>
 	</section>
+
 	<section id="portfolio">
-		<h2>Mes Projets</h2>
-		<button class="modal-trigger" data-modal-target="#modale-ouverture">Ouvrir la boîte modale</button>
+
+		<!-- Apparaît quand l'utilisateur est déconnecté-->
+		<div class="mes-projets-titre">
+			<h2>Mes Projets</h2>
+		</div>
+
+		<!-- Apparaît quand l'utilisateur est connecté-->
+		<div id="modifier-mes-projets">									
+			<h2>Mes Projets</h2>
+			<button class="modal-trigger" data-modal-target="#modale-ouverture"><i class="fa-sharp fa-regular fa-pen-to-square"></i></button>
+			<button class="modal-trigger" data-modal-target="#modale-ouverture">modifier</button>
+		</div>
+		
 		<div class="filtres-bloc">
 			<button class="btn-tous">Tous</button>
 			<button class="btn-trier-obj">Objets</button>
 			<button class="btn-trier-appt">Appartements</button>
 			<button class="btn-trier-hotel">Hôtels & Restaurants</button>         
 		</div>
+
 		<div class="gallery">
 			<figure>
 				<img src="assets/images/abajour-tahina.png" alt="Abajour Tahina">
@@ -91,6 +116,7 @@
 			</figure>
 		</div>
 	</section>
+
 	<section id="contact">
 		<h2>Contact</h2>
 		<p>Vous avez un projet ? Discutons-en !</p>
@@ -104,21 +130,32 @@
 			<input type="submit" value="Envoyer">
 		</form>
 	</section>
+
 </main>
 
-<aside id="modale-ouverture"  aria-hidden="true" role="dialog" aria-modal="false" aria-labelledby="modifier">
+<!-- Modale. "modale-ouverture" est lier à l'ancre du bouton modifier -->
+<aside id="modale-ouverture">
+	<!-- div contenant la modale et les propriétés qui pourront être modifiées en JS -->
 	<div class="modal" id="modale-ouverture" aria-hidden="true" role="dialog" aria-modal="false">
 		<div class="modal-content">
-		  <h2>Mes Projets</h2>
-		  <div class="modifs">
-			modifs
-		  </div>
-		  <div class="modal-wrapper">
-			<button class="modal-close">&times;</button>
-			<figure>
-			  <img src="assets/images/abajour-tahina.png" alt="Abajour Tahina">
-			  <figcaption>Abajour Tahina</figcaption>
-			</figure>
+		  <div id="modal-wrapper">
+			<div id="btn-modal">
+				<button class="modal-retour">&larr;</button>
+				<button class="modal-close">&times;</button>
+			</div>
+			<form action="#" method="post">
+				<label id="ajout-photo" for="image">Ajout photo</label>
+				<input type="file" id="image" name="image">
+				<label for="title">Titre</label>
+				<input type="text" name="title" id="title">
+				<label for="category">Catégorie</label>
+				<select id="category" name="category">
+				  <option value="Appartements">Appartements</option>
+				  <option value="Hotels &amp; restaurants">Hotels &amp; restaurants</option>
+				  <option value="Objets">Objets</option>
+				</select>
+				<input type="submit" value="Valider">
+			</form>
 		  </div>
 		</div>
 	  </div>
