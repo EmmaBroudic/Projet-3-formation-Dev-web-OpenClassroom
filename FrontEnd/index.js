@@ -168,15 +168,79 @@ if (user) {
     const modalClose = document.querySelectorAll(".modal-close");
     const modalOverlay = document.querySelector(".modal");
 
-    // Ouvrir la modale
-    modalTrigger.forEach(trigger => {
-        trigger.addEventListener("click", () => {
-            const target = document.querySelector(trigger.getAttribute("data-modal-target"));
-            target.setAttribute("aria-hidden", "false");
-            target.setAttribute("aria-modal", "true");
-            modalOverlay.style.display = "flex";
-        });
+
+// Ouvrir la modale
+modalTrigger.forEach(trigger => {
+    trigger.addEventListener("click", async () => {
+        const target = document.querySelector(trigger.getAttribute("data-modal-target"));
+
+        target.setAttribute("aria-hidden", "false");
+        target.setAttribute("aria-modal", "true");
+        modalOverlay.style.display = "flex";
+
+        // créer une constante galleryModal qui est lié à l'HTML
+        const galleryModal = document.querySelector(".gallery-modal-figure");
+
+        // créer une constante formulaireModal qui est lié à l'HTML
+        const formulaireModal = document.querySelector(".ajout-form");
+
+        // Invisibiliser le contenu HTML de la gallerie modale et du formulaire
+        galleryModal.innerHTML = "";
+        formulaireModal.innerHTML = "";
+
+        // Afficher les travaux
+        const reponse = await fetch("http://localhost:5678/api/works");
+        const pieces = await reponse.json();
+
+        pieces.forEach(piece => {
+            const figure = document.createElement("figure");
+            const image = document.createElement("img");
+            const figcaption = document.createElement("figcaption");
+            const deleteButton = document.createElement("button");
+            const corbeilleIcon = document.createElement("i"); // Créez un élément HTML pour le logo corbeille
+
+            image.src = piece.imageUrl;
+            figcaption.innerHTML = "éditer";
+            corbeilleIcon.className = "fas fa-trash suppr"; // Ajouter la classe suppr pour sélectionner les éléments
+
+            figure.dataset.id = piece.id; // Ajouter un attribut data-id avec l'identifiant du travail
+            galleryModal.appendChild(figure);
+            figure.appendChild(deleteButton);
+            figure.appendChild(corbeilleIcon);
+            figure.appendChild(image);
+            figure.appendChild(figcaption);
+
+            // Récupérer tous les éléments corbeilleIcon
+            const corbeilleIcons = document.querySelectorAll(".suppr");
+
+            // récupérer la liste des identifiants stockés dans le local storage (s'il existe)
+            const deletedWorkIds = JSON.parse(window.localStorage.getItem("deletedWorkIds")) || [];
+
+            corbeilleIcons.forEach(corbeilleIcon => {
+            corbeilleIcon.addEventListener("click", function () {
+                // récupérer l'identifiant du travail cliqué
+                const id = this.closest("figure").dataset.id;
+                
+                fetch(`http://localhost:5678/api/works/${id}`, {
+                method: 'DELETE',
+                body: JSON.stringify({ id: id }),
+                headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }
+                }).then(() => {
+                // ajouter l'identifiant du travail supprimé à la liste
+                deletedWorkIds.push(id);
+                // stocker la nouvelle liste dans le local storage
+                window.localStorage.setItem("deletedWorkIds", JSON.stringify(deletedWorkIds));
+                // retirer l'élément supprimé du DOM
+                console.log(id);
+                // Supprimer l'élément parent "figure" du DOM
+                const figure = this.closest("figure");
+                figure.remove();
+                    });
+                });
+            });    
+        });   
     });
+});
 
     // Fermer la modale
     modalClose.forEach(close => {
