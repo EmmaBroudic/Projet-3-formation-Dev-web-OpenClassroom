@@ -387,6 +387,10 @@ footer nav ul {
 	padding-top: 30px;
 }
 
+.invisible {
+	display: none;
+  }
+
 .ajout-form input {
 	height: 50px;
 	font-family: 'Work Sans';

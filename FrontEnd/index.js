@@ -110,6 +110,9 @@ boutonTrierHotels.addEventListener("click", function () {
     });
 });
 
+// variable globale pour stocker les résultats de la requête
+let pieces = [];
+
 // Options login et log out
 
 // Récupération du token dans le local Storage
@@ -165,23 +168,9 @@ if (user) {
             galleryModal.innerHTML = "";
             formulaireModal.innerHTML = "";
 
-            const boutonAjoutphoto = document.querySelector("#btn-valider");
-
-            // Empêcher la propagation de l'événement de clic vers la modale lorsque l'utilisateur clique sur le bouton #btn-valider
-            boutonAjoutphoto.addEventListener("click", (e) => {
-                e.stopPropagation();
-            });
-
-            boutonAjoutphoto.addEventListener("click", function () {
-                //formulaireModal.innerHTML = formulaireModal;
-                //titreAjoutphoto.innerHTML = titreAjoutphoto;
-                titreGallery.innerHTML = "Ajout photo";
-
-            });
-
             // Afficher les travaux
             const reponse = await fetch("http://localhost:5678/api/works");
-            const pieces = await reponse.json();
+            pieces = await reponse.json();
 
             // boucle qui affiche chaque travaux dans la modale
             pieces.forEach(piece => {
@@ -203,6 +192,8 @@ if (user) {
                 figure.appendChild(corbeilleIcon);
                 figure.appendChild(image);
                 figure.appendChild(figcaption);
+
+
 
                 // Récupérer tous les éléments corbeilleIcon
                 const corbeilleIcons = document.querySelectorAll(".suppr");
@@ -234,6 +225,23 @@ if (user) {
                     });
                 });
             });
+            
+            const boutonAjoutphoto = document.querySelector("#btn-valider");
+
+            // Empêcher la propagation de l'événement de clic vers la modale lorsque l'utilisateur clique sur le bouton #btn-valider
+            boutonAjoutphoto.addEventListener("click", (e) => {
+                e.stopPropagation();
+            });
+
+            boutonAjoutphoto.addEventListener("click", function () {
+                //formulaireModal.innerHTML = formulaireModal;
+                //titreAjoutphoto.innerHTML = titreAjoutphoto;
+                titreGallery.innerHTML = "Ajout photo";
+                pieces = [];
+                document.getElementById("galleryModal").classList.add("invisible");
+
+            });
+            
         });   
     });
 
