@@ -213,6 +213,7 @@ if (user) {
                 e.stopPropagation();
             });
 
+            // Changer le contenu de la modale après le click sur le bouton ajouter photo
             boutonAjoutPhoto.addEventListener("click", function () {
                 titreGallery.innerHTML = "Ajout photo";
                 galleryModal.style.display = "none";
@@ -220,44 +221,51 @@ if (user) {
                 boutonAjoutPhoto.style.display = "none";
                 boutonAjoutPhotoValider.style.display = "block";
                 supprP.innerHTML = "";
+
+                // click sur le bouton Valider - méthode fetch envoi données à l'API
               
                 boutonAjoutPhotoValider.addEventListener("click", function () {
-                    const image = document.getElementById("btn-ajout-photo");
-                    const title = document.getElementById("title").value;
-                    const category = document.getElementById("category").value;
+                    const imageInput = document.getElementById("btn-ajout-photo");
+                    const titleInput = document.getElementById("title").value;
+                    const categoryInput = document.getElementById("category").value;
+                    
+                    // Créer un objet FormData pour stocker les données
+                    const formData = new FormData();
+                    formData.append("image", imageInput.files[0]);
+                    formData.append("title", titleInput.value);
+                    formData.append("category", categoryInput.value);
+                    // Envoyer les données dans l'API avec la méthode POST
+                    fetch("http://localhost:5678/api/works", {
+                        method: 'POST',
+                        body: formData,
+                        headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }
+                    })
               
-                  // Envoyer les données dans l'API avec la méthode POST
-                  fetch("http://localhost:5678/api/works", {
-                    method: 'POST',
-                    body: JSON.stringify({ image: image, title: title, category: category }),
-                    headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }
-                  })
-              
-                  // Gérer la réponse de l'API
-                  .then(resp => {
-                    // Vérifier si la réponse est ok
-                    if(resp.ok) {
-                      // Traiter la réponse de l'API
-                      return resp.json();
-                    } else {
-                      // Gérer l'erreur si la réponse n'est pas ok
-                      throw new Error("Erreur lors de l'envoi des données");
-                    }
-                  })
-              
-                  // Traiter la réponse de l'API
-                  .then(data => {
-                    // Faire quelque chose avec les données de l'API, par exemple les afficher à l'utilisateur
-                    console.log(data);
-                  })
-                  
-                  // Gérer les erreurs
-                  .catch(error => {
-                    console.error(error);
-                    alert("Echec");
-                  });
+                    // Gérer la réponse de l'API
+                    .then(resp => {
+                        // Vérifier si la réponse est ok
+                        if(resp.ok) {
+                        // Traiter la réponse de l'API
+                        return resp.json();
+                        } else {
+                        // Gérer l'erreur si la réponse n'est pas ok
+                        throw new Error("Erreur lors de l'envoi des données");
+                        }
+                    })
+                
+                    // Traiter la réponse de l'API
+                    .then(data => {
+                        // Faire quelque chose avec les données de l'API, par exemple les afficher à l'utilisateur
+                        console.log(data);
+                    })
+                    
+                    // Gérer les erreurs
+                    .catch(error => {
+                        console.error(error);
+                        alert("Echec");
+                    });
                 });
-              });
+            });
 
             // Afficher les travaux
             const reponse = await fetch("http://localhost:5678/api/works");
