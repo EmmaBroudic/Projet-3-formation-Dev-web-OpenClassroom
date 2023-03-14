@@ -153,21 +153,21 @@
 			<div class="ajout-form">
 				<div id="ajout-img">
 					<img src="./assets/icons/icone-photo-grise.png" alt="Instagram">
-					<label for="img">+ Ajouter photo</label>
-					<input type="file" id="image" name="image" accept=".jpg,.png">
+					<button type="button" id="btn-ajout-photo">+ Ajouter photo</button>
 					<p>jpg png 4mo max</p>
 				</div>
 				<label for="title">Titre</label>
 				<input type="text" name="title" id="title">
 				<label for="category">Catégorie</label>
 				<select id="category" name="category">
-					<option value="Vide"></option>
+					<option label="Select an option"></option>
 					<option value="Appartements">Appartements</option>
 					<option value="Hotels &amp; restaurants">Hotels &amp; restaurants</option>
 					<option value="Objets">Objets</option>
 				</select>
 			</div>
-			<button type="button" id="btn-valider" class="btn btn-success">Valider</button>
+			<button type="button" id="btn-valider">Ajouter une photo</button>
+			<button type="button" id="btn-valider-deux">Valider</button>
 			<p id="suppr-modal">Supprimer la galerie</p>	
 		</form>
 	</div>

@@ -315,12 +315,6 @@ footer nav ul {
 	text-align: center;
 }
 
-#titre-ajout {
-	font-family: 'Work Sans' ;
-	font-size: 20px;
-	text-align: center;
-}
-
 .gallery-modal-figure {
 	position: relative; /* Définir la position de l'élément <figure> à relative */
 	z-index: 0; /* Définir la valeur de z-index à 0 */
@@ -382,44 +376,53 @@ footer nav ul {
 
 .ajout-form {
 	position: relative; /* Définir la position de l'élément <figure> à relative */
-	/*z-index: 0; /* Définir la valeur de z-index à 0 */
-	width: 80%;
+	z-index: 0; /* Définir la valeur de z-index à 0 */
+	width: 100%;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	grid-row-gap: 10px;
+	border-bottom: 1px solid grey;
+	padding-bottom: 30px;
 	padding-top: 30px;
 }
 
-.invisible {
-	display: none;
-  }
-
 .ajout-form input {
-	height: 50px;
+	height: 40px;
 	font-family: 'Work Sans';
 	font-size: 14px;
 	border: none;
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
-	margin-left: 5px;
-	margin-right: 5px;
 }
 
 .ajout-form label {
 	margin-top: 10px;
 	margin-bottom: 10px;
-	margin-left: 10px;
-	margin-right: 10px;
 }
 
 .ajout-form select {
 	background-color: white;
-	height: 50px;
+	height: 40px;
 	font-family: 'Work Sans';
 	font-size: 14px;
 	border: none;
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
-	margin-left: 5px;
-	margin-right: 5px;
 }
 
-.ajout-form input[type="submit"]{
+#btn-valider {
+	font-family: 'Syne';
+	font-weight: 700;
+	color: white;
+	background-color: #1D6154;
+	border: 0px;
+	margin : 2em auto ;
+	width: 180px;
+	text-align: center;
+	border-radius: 60px;
+	padding: 10px;
+}
+
+#btn-valider-deux {
 	font-family: 'Syne';
 	font-weight: 700;
 	color: white;
@@ -429,6 +432,7 @@ footer nav ul {
 	width: 180px;
 	text-align: center;
 	border-radius: 60px;
+	padding: 10px;
 }
 /*
 #modal-deux-retour {
@@ -464,10 +468,8 @@ footer nav ul {
 	border-radius: 5px 5px 5px 5px;
 	margin-top: 10px;
 	margin-bottom: 5px;
-	margin-left: 10px;
-	margin-right: 10px;
 	padding: 5px;
-	height: 140px;
+	height: 150px;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -483,13 +485,17 @@ footer nav ul {
 	color: grey;
 }
 
+/*
+
 #ajout-img input[type="file"] {
     opacity: 0;
     position: absolute;
     z-index: -1;
 }
 
-#ajout-img label {
+*/
+
+#btn-ajout-photo {
     display: inline-block;
     padding: 10px 15px;
     cursor: pointer;
@@ -502,13 +508,6 @@ footer nav ul {
 	width: 180px;
 	text-align: center;
 	border-radius: 60px;
-}
-
-#border {
-	border-bottom: 1px solid grey;
-	margin-top: 30px;
-	margin-left: 10px;
-	margin-right: 10px;
 }
 
 /* boutons modifier */

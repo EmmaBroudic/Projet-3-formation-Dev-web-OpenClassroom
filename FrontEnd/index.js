@@ -1,3 +1,36 @@
+// Récupération de la gallerie travaux via l'API
+const reponse = await fetch("http://localhost:5678/api/works");
+const works = await reponse.json();
+
+// Lier l'élément gallery en HTML au script JS
+const gallery = document.querySelector(".gallery");
+
+// Invisibiliser le contenu HTML de la gallerie travaux
+gallery.innerHTML = "";
+
+// Afficher tous les travaux
+works.forEach(work => {
+    const figure = document.createElement("figure");
+    const image = document.createElement("img");
+    const figcaption = document.createElement("figcaption");
+    // Écouter l'événement personnalisé "workDeleted" et supprimer de la galerie les éléments qui auront été sélectionnés
+    gallery.addEventListener("workDeleted", (event) => {
+        const id = event.detail.id;
+        const galleryItem = document.querySelector(`[data-id="${id}"]`);
+        if (galleryItem) {
+            galleryItem.remove();
+        }
+    });
+
+    image.src = work.imageUrl;
+    figcaption.textContent = work.title;
+    figure.dataset.id = work.id;
+
+    gallery.appendChild(figure);
+    figure.appendChild(image);
+    figure.appendChild(figcaption);
+});
+
 // Tri à partir des filtres
 
 // bouton sélectionner tout
@@ -110,9 +143,6 @@ boutonTrierHotels.addEventListener("click", function () {
     });
 });
 
-// variable globale pour stocker les résultats de la requête
-let pieces = [];
-
 // Options login et log out
 
 // Récupération du token dans le local Storage
@@ -164,13 +194,74 @@ if (user) {
             //créer une constante pout le titre gallerie qui est lié à l'HTML
             const titreGallery = document.querySelector("#titre-galerie");
 
+            //créer une constante pout le titre supprimer modale qui est lié à l'HTML
+            const supprP = document.querySelector("#suppr-modal");
+
+            //créer une constante pour lier le bouton ajout photo à l'HTML
+            const boutonAjoutPhoto = document.querySelector("#btn-valider");
+
+            //créer une constante pour lier le bouton ajout photo à l'HTML
+            const boutonAjoutPhotoValider = document.querySelector("#btn-valider-deux");
+
             // Invisibiliser le contenu HTML de la gallerie modale et du formulaire
             galleryModal.innerHTML = "";
-            formulaireModal.innerHTML = "";
+            formulaireModal.style.display = "none";
+            boutonAjoutPhotoValider.style.display = "none";
+
+            // Empêcher la propagation de l'événement de clic vers la modale lorsque l'utilisateur clique sur le bouton #btn-valider
+            boutonAjoutPhoto.addEventListener("click", (e) => {
+                e.stopPropagation();
+            });
+
+            boutonAjoutPhoto.addEventListener("click", function () {
+                titreGallery.innerHTML = "Ajout photo";
+                galleryModal.style.display = "none";
+                formulaireModal.style.display = "flex";
+                boutonAjoutPhoto.style.display = "none";
+                boutonAjoutPhotoValider.style.display = "block";
+                supprP.innerHTML = "";
+              
+                boutonAjoutPhotoValider.addEventListener("click", function () {
+                    const image = document.getElementById("btn-ajout-photo");
+                    const title = document.getElementById("title").value;
+                    const category = document.getElementById("category").value;
+              
+                  // Envoyer les données dans l'API avec la méthode POST
+                  fetch("http://localhost:5678/api/works", {
+                    method: 'POST',
+                    body: JSON.stringify({ image: image, title: title, category: category }),
+                    headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }
+                  })
+              
+                  // Gérer la réponse de l'API
+                  .then(resp => {
+                    // Vérifier si la réponse est ok
+                    if(resp.ok) {
+                      // Traiter la réponse de l'API
+                      return resp.json();
+                    } else {
+                      // Gérer l'erreur si la réponse n'est pas ok
+                      throw new Error("Erreur lors de l'envoi des données");
+                    }
+                  })
+              
+                  // Traiter la réponse de l'API
+                  .then(data => {
+                    // Faire quelque chose avec les données de l'API, par exemple les afficher à l'utilisateur
+                    console.log(data);
+                  })
+                  
+                  // Gérer les erreurs
+                  .catch(error => {
+                    console.error(error);
+                    alert("Echec");
+                  });
+                });
+              });
 
             // Afficher les travaux
             const reponse = await fetch("http://localhost:5678/api/works");
-            pieces = await reponse.json();
+            const pieces = await reponse.json();
 
             // boucle qui affiche chaque travaux dans la modale
             pieces.forEach(piece => {
@@ -224,24 +315,7 @@ if (user) {
                         });
                     });
                 });
-            });
-            
-            const boutonAjoutphoto = document.querySelector("#btn-valider");
-
-            // Empêcher la propagation de l'événement de clic vers la modale lorsque l'utilisateur clique sur le bouton #btn-valider
-            boutonAjoutphoto.addEventListener("click", (e) => {
-                e.stopPropagation();
-            });
-
-            boutonAjoutphoto.addEventListener("click", function () {
-                //formulaireModal.innerHTML = formulaireModal;
-                //titreAjoutphoto.innerHTML = titreAjoutphoto;
-                titreGallery.innerHTML = "Ajout photo";
-                pieces = [];
-                document.getElementById("galleryModal").classList.add("invisible");
-
-            });
-            
+            });    
         });   
     });
 
@@ -326,35 +400,3 @@ logout.addEventListener("click", function(event) {
     window.location.href = "login.html";
 });
 
-// Récupération de la gallerie travaux via l'API
-const reponse = await fetch("http://localhost:5678/api/works");
-const works = await reponse.json();
-
-// Lier l'élément gallery en HTML au script JS
-const gallery = document.querySelector(".gallery");
-
-// Invisibiliser le contenu HTML de la gallerie travaux
-gallery.innerHTML = "";
-
-// Afficher tous les travaux
-works.forEach(work => {
-    const figure = document.createElement("figure");
-    const image = document.createElement("img");
-    const figcaption = document.createElement("figcaption");
-    // Écouter l'événement personnalisé "workDeleted" et supprimer de la galerie les éléments qui auront été sélectionnés
-    gallery.addEventListener("workDeleted", (event) => {
-        const id = event.detail.id;
-        const galleryItem = document.querySelector(`[data-id="${id}"]`);
-        if (galleryItem) {
-            galleryItem.remove();
-        }
-    });
-
-    image.src = work.imageUrl;
-    figcaption.textContent = work.title;
-    figure.dataset.id = work.id;
-
-    gallery.appendChild(figure);
-    figure.appendChild(image);
-    figure.appendChild(figcaption);
-});
