@@ -134,15 +134,15 @@
 </main>
 
 <!-- Modale. "modale-ouverture" est lier à l'ancre du bouton modifier -->
-<aside id="modale-ouverture">
+<aside>
 	<!-- div contenant la modale et les propriétés qui pourront être modifiées en JS -->
 	<div class="modal" id="modale-ouverture" aria-hidden="true" role="dialog" aria-modal="false">
 		<form class="modal-content">
-			<div class="btn-modal">
-				<button class="modal-retour">&larr;</button>
-				<button class="modal-close">&times;</button>
+			<div id="btn-modal">
+				<button id="modal-retour">&larr;</button>
+				<button id="modal-close">&times;</button>
 			</div>
-			<p id="titre-modal">Galerie photo</p>
+			<p id="titre-galerie">Galerie photo</p>
 			<figure class="gallery-modal-figure">
 				<button class="suppr">
 					<i class="fa-solid fa-circle-trash"></i>
@@ -150,27 +150,28 @@
 				<img src="assets/images/hotel-first-arte-new-delhi.png" alt="Hotel First Arte - New Delhi">
 				<figcaption>test bla bla</figcaption>
 			</figure>
-			<input class="btn-valider" type="submit" value="Ajouter une photo">
-			<p id="suppr-modal">Supprimer la galerie</p>
-		</form>
-		<form class="ajout-form" action="#" method="post">
-			<div class="btn-modal">
-				<button class="modal-retour">&larr;</button>
-				<button class="modal-close">&times;</button>
+			<div class="ajout-form">
+				<div id="ajout-img">
+					<img src="./assets/icons/icone-photo-grise.png" alt="Instagram">
+					<label for="img">+ Ajouter photo</label>
+					<input type="file" id="image" name="image" accept=".jpg,.png">
+					<p>jpg png 4mo max</p>
+				</div>
+				<label for="title">Titre</label>
+				<input type="text" name="title" id="title">
+				<label for="category">Catégorie</label>
+				<select id="category" name="category">
+					<option value="Vide"></option>
+					<option value="Appartements">Appartements</option>
+					<option value="Hotels &amp; restaurants">Hotels &amp; restaurants</option>
+					<option value="Objets">Objets</option>
+				</select>
 			</div>
-			<label for="image">Ajout photo</label>
-			<input type="file" id="image" name="image">
-			<label for="title">Titre</label>
-			<input type="text" name="title" id="title">
-			<label for="category">Catégorie</label>
-			<select id="category" name="category">
-			  <option value="Appartements">Appartements</option>
-			  <option value="Hotels &amp; restaurants">Hotels &amp; restaurants</option>
-			  <option value="Objets">Objets</option>
-			</select>
-			<input class="btn-valider" type="submit" value="Valider">
+			<button id="btn-valider">Ajouter photo</button>
+			<p id="suppr-modal">Supprimer la galerie</p>	
 		</form>
 	</div>
+
 </aside>
 
 <footer>

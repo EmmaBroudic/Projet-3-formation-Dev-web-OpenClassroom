@@ -138,15 +138,16 @@ if (user) {
     // Lier les éléments de la modale en HTML au script JS
 
     const modalTrigger = document.querySelectorAll(".modal-trigger");
-    const modalClose = document.querySelectorAll(".modal-close");
+    const modalClose = document.querySelectorAll("#modal-close");
     const modalOverlay = document.querySelector(".modal");
 
 
     // Ouvrir la modale
     modalTrigger.forEach(trigger => {
-        trigger.addEventListener("click", async () => {
+        trigger.addEventListener("click", async (e) => {
+            e.stopPropagation(); // empêcher la propagation de l'événement "click"
             const target = document.querySelector(trigger.getAttribute("data-modal-target"));
-            // changer les propriétés de la balise modale (.modale-trigger)
+            // changer les propriétés de la balise modale (.modal)
             target.setAttribute("aria-hidden", "false");
             target.setAttribute("aria-modal", "true");
             modalOverlay.style.display = "flex";
@@ -157,9 +158,26 @@ if (user) {
             // créer une constante formulaireModal qui est lié à l'HTML
             const formulaireModal = document.querySelector(".ajout-form");
 
+            //créer une constante pout le titre gallerie qui est lié à l'HTML
+            const titreGallery = document.querySelector("#titre-galerie");
+
             // Invisibiliser le contenu HTML de la gallerie modale et du formulaire
             galleryModal.innerHTML = "";
             formulaireModal.innerHTML = "";
+
+            const boutonAjoutphoto = document.querySelector("#btn-valider");
+
+            // Empêcher la propagation de l'événement de clic vers la modale lorsque l'utilisateur clique sur le bouton #btn-valider
+            boutonAjoutphoto.addEventListener("click", (e) => {
+                e.stopPropagation();
+            });
+
+            boutonAjoutphoto.addEventListener("click", function () {
+                //formulaireModal.innerHTML = formulaireModal;
+                //titreAjoutphoto.innerHTML = titreAjoutphoto;
+                titreGallery.innerHTML = "Ajout photo";
+
+            });
 
             // Afficher les travaux
             const reponse = await fetch("http://localhost:5678/api/works");
@@ -214,14 +232,14 @@ if (user) {
                             }
                         });
                     });
-                });    
-            });   
-        });
+                });
+            });
+        });   
     });
 
     // Fermer la modale
     modalClose.forEach(close => {
-        close.addEventListener("click", () => {
+        close.addEventListener("click", (e) => {
             const modal = close.closest(".modal");
             modal.setAttribute("aria-hidden", "true");
             modal.setAttribute("aria-modal", "false");
@@ -240,6 +258,38 @@ if (user) {
             });
         }
     });
+
+    /*// Lier les éléments de la modale en HTML au script JS
+    const modalDeuxTrigger = document.querySelector(".modal-deux-trigger");
+    const modalDeuxClose = document.querySelector(".modal-deux-close");
+    const modalDeuxOverlay = document.querySelector(".modal-deux");
+
+    modalDeuxTrigger.addEventListener("click", async (e) => {
+        e.stopPropagation(); // empêcher la propagation de l'événement "click"
+        const targetDeux = document.querySelector(modalDeuxTrigger.getAttribute("data-modal-deux-target"));
+        targetDeux.setAttribute("aria-hidden", "false");
+        targetDeux.setAttribute("aria-modal", "true");
+        modalDeuxOverlay.style.display = "flex";
+      });
+      
+      modalDeuxClose.addEventListener("click", (e) => {
+        e.preventDefault(); // empêcher le comportement par défaut de l'événement "click"
+        e.stopPropagation(); // empêcher la propagation de l'événement "click"
+        const modalDeux = e.modalDeux.closest(".modal-deux");
+        modalDeux.setAttribute("aria-hidden", "true");
+        modalDeux.setAttribute("aria-modal", "false");
+        modalDeuxOverlay.style.display = "none";
+      });
+      
+      // Masquer la modale deux lorsqu'on clique en dehors de celle-ci
+      modalDeuxOverlay.addEventListener("click", (e) => {
+        if (e.target === modalDeuxOverlay) {
+          const modalDeux = modalDeuxClose.closest(".modal-deux");
+          modalDeux.setAttribute("aria-hidden", "true");
+          modalDeux.setAttribute("aria-modal", "false");
+          modalDeuxOverlay.style.display = "none";
+        }
+      });*/
 
 } else {
     // Afficher l'onglet login

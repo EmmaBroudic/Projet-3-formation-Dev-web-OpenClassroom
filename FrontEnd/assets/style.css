@@ -239,6 +239,7 @@ footer nav ul {
 	width: 100%;
 	height: 100%;
 	background-color: rgba(0, 0, 0, 0.8);
+	z-index: 1;
 }
 
 .modal-content {
@@ -277,7 +278,14 @@ footer nav ul {
 	border-radius: 60px;
 }
 
-.modal-retour {
+
+#btn-modal {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+}
+
+#modal-retour {
 	position: absolute;
 	top: 10px;
 	left: 10px;
@@ -289,7 +297,7 @@ footer nav ul {
 	color: #000;
 }
 
-.modal-close {
+#modal-close {
 	position: absolute;
 	top: 10px;
 	right: 10px;
@@ -301,19 +309,16 @@ footer nav ul {
 	color: #000;
   }
 
-.btn-modal {
-	display: flex;
-	flex-direction: row;
-	flex-wrap: nowrap;
-}
-
-#titre-modal {
-	display: relative;
+#titre-galerie {
 	font-family: 'Work Sans' ;
 	font-size: 20px;
 	text-align: center;
-	margin-top: 30px;
-	margin-bottom: 30px;
+}
+
+#titre-ajout {
+	font-family: 'Work Sans' ;
+	font-size: 20px;
+	text-align: center;
 }
 
 .gallery-modal-figure {
@@ -327,6 +332,7 @@ footer nav ul {
 	border-bottom: 1px solid grey;
 	align-items: center;
 	padding-bottom: 30px;
+	padding-top: 30px;
 }
 
 .gallery-modal-figure figcaption {
@@ -372,6 +378,133 @@ footer nav ul {
 #suppr-modal {
 	color: red;
 	font-size: 12px;
+}
+
+.ajout-form {
+	position: relative; /* Définir la position de l'élément <figure> à relative */
+	/*z-index: 0; /* Définir la valeur de z-index à 0 */
+	width: 80%;
+	padding-top: 30px;
+}
+
+.ajout-form input {
+	height: 50px;
+	font-family: 'Work Sans';
+	font-size: 14px;
+	border: none;
+	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+	margin-left: 5px;
+	margin-right: 5px;
+}
+
+.ajout-form label {
+	margin-top: 10px;
+	margin-bottom: 10px;
+	margin-left: 10px;
+	margin-right: 10px;
+}
+
+.ajout-form select {
+	background-color: white;
+	height: 50px;
+	font-family: 'Work Sans';
+	font-size: 14px;
+	border: none;
+	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+	margin-left: 5px;
+	margin-right: 5px;
+}
+
+.ajout-form input[type="submit"]{
+	font-family: 'Syne';
+	font-weight: 700;
+	color: white;
+	background-color: grey;
+	border: 0px;
+	margin : 2em auto ;
+	width: 180px;
+	text-align: center;
+	border-radius: 60px;
+}
+/*
+#modal-deux-retour {
+	position: absolute;
+	display: flex;
+	justify-content: flex-start;
+	top: 10px;
+	left: 10px;
+	font-size: 20px;
+	font-weight: bold;
+	background: none;
+	border: none;
+	cursor: pointer;
+	color: #000;
+}
+
+.modal-deux-close {
+	position: absolute;
+	display: flex;
+	justify-content: flex-end;
+	top: 10px;
+	right: 10px;
+	font-size: 20px;
+	font-weight: bold;
+	background: none;
+	border: none;
+	cursor: pointer;
+	color: #000;
+  }*/
+
+#ajout-img {
+	background-color: rgba(0, 0, 255, 0.1); /* la valeur 0.2 représente l'opacité */
+	border-radius: 5px 5px 5px 5px;
+	margin-top: 10px;
+	margin-bottom: 5px;
+	margin-left: 10px;
+	margin-right: 10px;
+	padding: 5px;
+	height: 140px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+#ajout-img img {
+	max-width: 30px;
+	height: auto;
+}
+
+#ajout-img p {
+	font-size: 8px;
+	color: grey;
+}
+
+#ajout-img input[type="file"] {
+    opacity: 0;
+    position: absolute;
+    z-index: -1;
+}
+
+#ajout-img label {
+    display: inline-block;
+    padding: 10px 15px;
+    cursor: pointer;
+	font-family: 'Syne';
+	font-weight: 700;
+	color: #4682B4;
+	background-color: #DCDCDC;
+	border: 0px;
+	margin : 2em auto ;
+	width: 180px;
+	text-align: center;
+	border-radius: 60px;
+}
+
+#border {
+	border-bottom: 1px solid grey;
+	margin-top: 30px;
+	margin-left: 10px;
+	margin-right: 10px;
 }
 
 /* boutons modifier */
