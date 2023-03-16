@@ -222,23 +222,31 @@ if (user) {
                 boutonAjoutPhotoValider.style.display = "block";
                 supprP.innerHTML = "";
 
+                let formAjoutPhoto = document.forms.namedItem("ajout");
                 // click sur le bouton Valider - méthode fetch envoi données à l'API
-              
-                boutonAjoutPhotoValider.addEventListener("click", function () {
-                    const imageInput = document.getElementById("btn-ajout-photo");
-                    const titleInput = document.getElementById("title").value;
-                    const categoryInput = document.getElementById("category").value;
+                formAjoutPhoto.addEventListener("submit", function (e) {
+                    e.preventDefault();
+                    let imageInput = document.getElementById("btn-ajout-photo");
+                    let titleInput = document.getElementById("title");
+                    let categoryInput = document.getElementById("category");
+
+                    console.log(imageInput, titleInput, categoryInput);
                     
                     // Créer un objet FormData pour stocker les données
-                    const formData = new FormData();
+                    let formData = new FormData();
                     formData.append("image", imageInput.files[0]);
                     formData.append("title", titleInput.value);
                     formData.append("category", categoryInput.value);
+
+                    console.log(formData, "hello");
+
                     // Envoyer les données dans l'API avec la méthode POST
                     fetch("http://localhost:5678/api/works", {
                         method: 'POST',
                         body: formData,
-                        headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }
+                        headers: { //'Accept': 'application/json',
+                                    'authorization': `Bearer ${user}`,
+                                 }
                     })
               
                     // Gérer la réponse de l'API
@@ -246,6 +254,7 @@ if (user) {
                         // Vérifier si la réponse est ok
                         if(resp.ok) {
                         // Traiter la réponse de l'API
+                        console.log("ok");
                         return resp.json();
                         } else {
                         // Gérer l'erreur si la réponse n'est pas ok
@@ -255,7 +264,7 @@ if (user) {
                 
                     // Traiter la réponse de l'API
                     .then(data => {
-                        // Faire quelque chose avec les données de l'API, par exemple les afficher à l'utilisateur
+                        // Verif
                         console.log(data);
                     })
                     
@@ -299,7 +308,8 @@ if (user) {
 
                 // boucle de la galerie modale actualisée en fonction de la suppression des éléments
                 corbeilleIcons.forEach(corbeilleIcon => {
-                    corbeilleIcon.addEventListener("click", function () {
+                    corbeilleIcon.addEventListener("click", function (event) {
+                        event.stopPropagation();
                         // récupérer l'identifiant du travail cliqué
                         const id = this.closest("figure").dataset.id;
 
@@ -307,7 +317,9 @@ if (user) {
                         fetch(`http://localhost:5678/api/works/${id}`, {
                             method: 'DELETE',
                             body: JSON.stringify({ id: id }),
-                            headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }
+                            headers: { 'Accept': 'application/json',
+                                        'authorization': `Bearer ${user}`,
+                                        'Content-Type': 'application/json' }
                         }).then(() => {
                             // Supprimer l'élément parent "figure" du DOM
                             const figure = this.closest("figure");

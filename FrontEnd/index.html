@@ -137,7 +137,7 @@
 <aside>
 	<!-- div contenant la modale et les propriétés qui pourront être modifiées en JS -->
 	<div class="modal" id="modale-ouverture" aria-hidden="true" role="dialog" aria-modal="false">
-		<form class="modal-content">
+		<form class="modal-content" method="post" enctype="multipart/form-data" name="ajout">
 			<div id="btn-modal">
 				<button id="modal-retour">&larr;</button>
 				<button id="modal-close">&times;</button>
@@ -153,21 +153,21 @@
 			<div class="ajout-form">
 				<div id="ajout-img">
 					<img src="./assets/icons/icone-photo-grise.png" alt="Instagram">
-					<button type="button" id="btn-ajout-photo">+ Ajouter photo</button>
+					<input type="file" id="btn-ajout-photo" name="image" accept="image/jpeg, image/png">
 					<p>jpg png 4mo max</p>
 				</div>
 				<label for="title">Titre</label>
-				<input type="text" name="title" id="title">
+				<input id="title" type="text" name="title">
 				<label for="category">Catégorie</label>
 				<select id="category" name="category">
 					<option label="Select an option"></option>
-					<option value="Appartements">Appartements</option>
-					<option value="Hotels &amp; restaurants">Hotels &amp; restaurants</option>
-					<option value="Objets">Objets</option>
+					<option value="1">Appartements</option>
+					<option value="2">Hotels &amp; restaurants</option>
+					<option value="3">Objets</option>
 				</select>
 			</div>
 			<button type="button" id="btn-valider">Ajouter une photo</button>
-			<button type="button" id="btn-valider-deux">Valider</button>
+			<input id="btn-valider-deux" type="submit" value="Valider">
 			<p id="suppr-modal">Supprimer la galerie</p>	
 		</form>
 	</div>
