@@ -239,12 +239,13 @@ if (user) {
                     formData.append("category", categoryInput.value);
 
                     console.log(formData, "hello");
+                    console.log(user);
 
                     // Envoyer les données dans l'API avec la méthode POST
                     fetch("http://localhost:5678/api/works", {
                         method: 'POST',
                         body: formData,
-                        headers: { //'Accept': 'application/json',
+                        headers: { 'Accept': 'application/json',
                                     'authorization': `Bearer ${user}`,
                                  }
                     })
@@ -360,38 +361,6 @@ if (user) {
             });
         }
     });
-
-    /*// Lier les éléments de la modale en HTML au script JS
-    const modalDeuxTrigger = document.querySelector(".modal-deux-trigger");
-    const modalDeuxClose = document.querySelector(".modal-deux-close");
-    const modalDeuxOverlay = document.querySelector(".modal-deux");
-
-    modalDeuxTrigger.addEventListener("click", async (e) => {
-        e.stopPropagation(); // empêcher la propagation de l'événement "click"
-        const targetDeux = document.querySelector(modalDeuxTrigger.getAttribute("data-modal-deux-target"));
-        targetDeux.setAttribute("aria-hidden", "false");
-        targetDeux.setAttribute("aria-modal", "true");
-        modalDeuxOverlay.style.display = "flex";
-      });
-      
-      modalDeuxClose.addEventListener("click", (e) => {
-        e.preventDefault(); // empêcher le comportement par défaut de l'événement "click"
-        e.stopPropagation(); // empêcher la propagation de l'événement "click"
-        const modalDeux = e.modalDeux.closest(".modal-deux");
-        modalDeux.setAttribute("aria-hidden", "true");
-        modalDeux.setAttribute("aria-modal", "false");
-        modalDeuxOverlay.style.display = "none";
-      });
-      
-      // Masquer la modale deux lorsqu'on clique en dehors de celle-ci
-      modalDeuxOverlay.addEventListener("click", (e) => {
-        if (e.target === modalDeuxOverlay) {
-          const modalDeux = modalDeuxClose.closest(".modal-deux");
-          modalDeux.setAttribute("aria-hidden", "true");
-          modalDeux.setAttribute("aria-modal", "false");
-          modalDeuxOverlay.style.display = "none";
-        }
-      });*/
 
 } else {
     // Afficher l'onglet login
