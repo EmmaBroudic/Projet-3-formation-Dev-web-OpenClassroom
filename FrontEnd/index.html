@@ -20,6 +20,7 @@
 		<ul>
 			<li>projets</li>
 			<li>contact</li>
+			<!-- Ajout des class login-tab et log-out tab pour le code JS-->
 			<li><a href="login.html" class="login-tab">login</a><a href="" class="logout-tab">logout</a></li>
 			<li><img src="./assets/icons/instagram.png" alt="Instagram"></li>
 		</ul>
@@ -61,7 +62,8 @@
 			<button class="modal-trigger" data-modal-target="#modale-ouverture"><i class="fa-sharp fa-regular fa-pen-to-square"></i></button>
 			<button class="modal-trigger" data-modal-target="#modale-ouverture">modifier</button>
 		</div>
-		
+
+		<!-- Apparaît quand l'utilisateur est déconnecté-->
 		<div class="filtres-bloc">
 			<button class="btn-tous">Tous</button>
 			<button class="btn-trier-obj">Objets</button>
@@ -69,6 +71,7 @@
 			<button class="btn-trier-hotel">Hôtels & Restaurants</button>         
 		</div>
 
+		<!-- Apparaît que l'utilisateur soit connecté ou déconnecté-->
 		<div class="gallery">
 			<figure>
 				<img src="assets/images/abajour-tahina.png" alt="Abajour Tahina">
@@ -133,7 +136,7 @@
 
 </main>
 
-<!-- Modale. "modale-ouverture" est lier à l'ancre du bouton modifier -->
+<!-- Modale. "modale-ouverture" est liée à l'ancre du bouton modifier -->
 <aside>
 	<!-- div contenant la modale et les propriétés qui pourront être modifiées en JS -->
 	<div class="modal" id="modale-ouverture" aria-hidden="true" role="dialog" aria-modal="false">

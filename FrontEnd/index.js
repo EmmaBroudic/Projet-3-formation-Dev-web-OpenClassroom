@@ -1,11 +1,11 @@
-// Récupération de la gallerie travaux via l'API
+// Récupération de la galerie travaux via l'API
 const reponse = await fetch("http://localhost:5678/api/works");
 const works = await reponse.json();
 
 // Lier l'élément gallery en HTML au script JS
 const gallery = document.querySelector(".gallery");
 
-// Invisibiliser le contenu HTML de la gallerie travaux
+// Invisibiliser le contenu HTML de la galerie travaux
 gallery.innerHTML = "";
 
 // Afficher tous les travaux
@@ -38,7 +38,7 @@ const boutonTous = document.querySelector(".btn-tous");
 
 boutonTous.addEventListener("click", function () {
     
-// Invisibiliser le contenu HTML de la gallerie travaux
+// Invisibiliser le contenu HTML de la galerie travaux
     gallery.innerHTML = "";
 
 // Afficher les travaux
@@ -185,16 +185,16 @@ if (user) {
             target.setAttribute("aria-modal", "true");
             modalOverlay.style.display = "flex";
 
-            // créer une constante galleryModal qui est lié à l'HTML
+            // créer une constante galleryModal qui est liée à l'HTML
             const galleryModal = document.querySelector(".gallery-modal-figure");
 
-            // créer une constante formulaireModal qui est lié à l'HTML
+            // créer une constante formulaireModal qui est liée à l'HTML
             const formulaireModal = document.querySelector(".ajout-form");
 
-            //créer une constante pout le titre gallerie qui est lié à l'HTML
+            //créer une constante pout le titre galerie qui est liée à l'HTML
             const titreGallery = document.querySelector("#titre-galerie");
 
-            //créer une constante pout le titre supprimer modale qui est lié à l'HTML
+            //créer une constante pout le titre supprimer modale qui est liée à l'HTML
             const supprP = document.querySelector("#suppr-modal");
 
             //créer une constante pour lier le bouton ajout photo à l'HTML
@@ -222,14 +222,19 @@ if (user) {
                 boutonAjoutPhotoValider.style.display = "block";
                 supprP.innerHTML = "";
 
+                // créer une variable liée au formulaire de la modale afin de permettre l'envoi de nouveaux travaux à l'API
                 let formAjoutPhoto = document.forms.namedItem("ajout");
+                
                 // click sur le bouton Valider - méthode fetch envoi données à l'API
                 formAjoutPhoto.addEventListener("submit", function (e) {
                     e.preventDefault();
+                    
+                    // Lier les élément input du formulaire au code JS
                     let imageInput = document.getElementById("btn-ajout-photo");
                     let titleInput = document.getElementById("title");
                     let categoryInput = document.getElementById("category");
 
+                    // test console
                     console.log(imageInput, titleInput, categoryInput);
                     
                     // Créer un objet FormData pour stocker les données
@@ -238,6 +243,7 @@ if (user) {
                     formData.append("title", titleInput.value);
                     formData.append("category", categoryInput.value);
 
+                    // tests console
                     console.log(formData, "hello");
                     console.log(user);
 
@@ -289,20 +295,20 @@ if (user) {
                 const deleteButton = document.createElement("button");
                 const corbeilleIcon = document.createElement("i");
 
+                // Affichage du contenu galerie de la modale
                 image.src = piece.imageUrl;
                 figcaption.innerHTML = "éditer";
                 corbeilleIcon.className = "fas fa-trash suppr";
 
                 // ajout d'un id qui permettra de supprimer les travaux
                 figure.dataset.id = piece.id;
+
                 // construction du DOM
                 galleryModal.appendChild(figure);
                 figure.appendChild(deleteButton);
                 figure.appendChild(corbeilleIcon);
                 figure.appendChild(image);
                 figure.appendChild(figcaption);
-
-
 
                 // Récupérer tous les éléments corbeilleIcon
                 const corbeilleIcons = document.querySelectorAll(".suppr");
@@ -311,6 +317,7 @@ if (user) {
                 corbeilleIcons.forEach(corbeilleIcon => {
                     corbeilleIcon.addEventListener("click", function (event) {
                         event.stopPropagation();
+                        
                         // récupérer l'identifiant du travail cliqué
                         const id = this.closest("figure").dataset.id;
 
