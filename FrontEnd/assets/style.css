@@ -464,32 +464,48 @@ footer nav ul {
 	margin-bottom: 10px;
 	margin-top: 10px;
 	padding: 5px;
-	height: 100px;
+	height: 115px;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 }
 
-#text-ajout {
-	font-size: 8px;
-	color: grey;
-}
+
 
 /* Propriétés du bouton ajout photo dans le bloc ajout img dans la modale formulaire */
 
-#input-photo {
-    display: inline-block;
+#ajout-img label {
+    position: absolute;
+	display: block;
     padding: 10px 15px;
-    cursor: pointer;
 	font-family: 'Syne';
 	font-weight: 700;
 	color: #4682B4;
 	background-color: #DCDCDC;
 	border: 0px;
-	margin : 2em auto ;
+	margin-top: 50px;
+	margin-left : 2em auto;
+	margin-right: 2em auto;
 	width: 150px;
 	text-align: center;
 	border-radius: 60px;
+	cursor: pointer;
+	z-index: 1;
+}
+  
+#input-photo {
+	position: absolute;
+	top: 0;
+	left: 0;
+	opacity: 0;
+	z-index: 2;
+  }
+
+#text-ajout {
+	position: absolute;
+	font-size: 8px;
+	color: grey;
+	margin-top: 100px;
 }
 
 #preview {

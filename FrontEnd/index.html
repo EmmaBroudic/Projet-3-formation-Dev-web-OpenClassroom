@@ -156,6 +156,7 @@
 			<div class="ajout-form">
 				<div id="ajout-img">
 					<img id="preview" src="./assets/icons/icone-photo-grise.png" alt="Instagram">
+					<label for="input-photo" id="label-input-photo">+ Ajouter photo</label>
 					<input id="input-photo" type="file" name="image" accept="image/jpeg, image/png">
 					<p id="text-ajout">jpg png 4mo max</p>
 				</div>
@@ -186,31 +187,6 @@
 </footer>
 
 <script type="module" src="index.js"></script>
-<script>
-	let imageInput = document.getElementById("input-photo");
-	const text = document.getElementById("text-ajout");
-	const preview = document.getElementById("preview");
-	const fond = document.getElementById("ajout-img");
-
-	imageInput.addEventListener("change", () => {
-	  const file = imageInput.files[0];
-	  const reader = new FileReader();
-
-	  reader.addEventListener("load", () => {
-		preview.setAttribute("src", reader.result);
-	  });
-
-	  if (file) {
-		imageInput.style.display = "none";
-		text.style.display ="none";
-		preview.style.width = "auto";
-		preview.style.height = "100px";
-		fond.style.backgroundColor = "rgba(0, 0, 255, 0.4)";
-		fond.style.padding = "0";
-		reader.readAsDataURL(file);
-	  }
-	});
-</script>
 
 </body>
 </html>

@@ -221,32 +221,42 @@ if (user) {
                 boutonAjoutPhoto.style.display = "none";
                 boutonAjoutPhotoValider.style.display = "block";
                 supprP.innerHTML = "";
+                
+                let imageInput = document.getElementById("input-photo");
+                const labelImageInput = document.getElementById("label-input-photo");
 
                 // créer une variable liée au formulaire de la modale afin de permettre l'envoi de nouveaux travaux à l'API
                 let formAjoutPhoto = document.forms.namedItem("ajout");
+
+                // à commenter - ajout de la miniature
+                const text = document.getElementById("text-ajout");
+                const preview = document.getElementById("preview");
+                const fond = document.getElementById("ajout-img");
+            
+                imageInput.addEventListener("change", () => {
+                  const file = imageInput.files[0];
+                  const reader = new FileReader();
+            
+                  reader.addEventListener("load", () => {
+                    preview.setAttribute("src", reader.result);
+                  });
+            
+                  if (file) {
+                    imageInput.style.display = "none";
+                    labelImageInput.style.display = "none";
+                    text.style.display ="none";
+                    preview.style.width = "auto";
+                    preview.style.height = "115px";
+                    fond.style.backgroundColor = "rgba(0, 0, 255, 0.4)";
+                    fond.style.padding = "0";
+                    boutonAjoutPhotoValider.style.backgroundColor = "#1D6154";
+                    reader.readAsDataURL(file);
+                  }
+                });
                 
                 // click sur le bouton Valider - méthode fetch envoi données à l'API
                 formAjoutPhoto.addEventListener("submit", function (e) {
                     e.preventDefault();
-                    
-                    // Lier les élément input du formulaire au code JS
-                    let imageInput = document.getElementById("input-photo");
-
-                    /*// faire apparaître la miniature
-                    const preview = document.getElementById("preview");
-
-                    imageInput.addEventListener("change", () => {
-                        const file = imageInput.files[0];
-                        const reader = new FileReader();
-
-                        reader.addEventListener("load", () => {
-                            preview.setAttribute("src", reader.result);
-                        });
-
-                        if (file) {
-                            reader.readAsDataURL(file);
-                        }
-                    });*/
 
                     let titleInput = document.getElementById("title");
                     let categoryInput = document.getElementById("category");
