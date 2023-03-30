@@ -230,7 +230,24 @@ if (user) {
                     e.preventDefault();
                     
                     // Lier les élément input du formulaire au code JS
-                    let imageInput = document.getElementById("btn-ajout-photo");
+                    let imageInput = document.getElementById("input-photo");
+
+                    /*// faire apparaître la miniature
+                    const preview = document.getElementById("preview");
+
+                    imageInput.addEventListener("change", () => {
+                        const file = imageInput.files[0];
+                        const reader = new FileReader();
+
+                        reader.addEventListener("load", () => {
+                            preview.setAttribute("src", reader.result);
+                        });
+
+                        if (file) {
+                            reader.readAsDataURL(file);
+                        }
+                    });*/
+
                     let titleInput = document.getElementById("title");
                     let categoryInput = document.getElementById("category");
 
@@ -350,6 +367,7 @@ if (user) {
     // Fermer la modale
     modalClose.forEach(close => {
         close.addEventListener("click", (e) => {
+            e.stopPropagation();
             const modal = close.closest(".modal");
             modal.setAttribute("aria-hidden", "true");
             modal.setAttribute("aria-modal", "false");
@@ -360,6 +378,7 @@ if (user) {
     // Masquer la modale lorsqu'on clique en dehors de celle-ci
     modalOverlay.addEventListener("click", (e) => {
         if (e.target === modalOverlay) {
+            e.stopPropagation();
             modalClose.forEach(close => {
                 const modal = close.closest(".modal");
                 modal.setAttribute("aria-hidden", "true");
