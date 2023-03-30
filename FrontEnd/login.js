@@ -4,8 +4,8 @@ const formulaire = document.querySelector(".login-form");
 const submitButton = document.querySelector(".submit-btn");
 
 // activer le click à la soumission des données formulaires (email et mot de passe)
-formulaire.addEventListener("submit", function(event) {
-    event.preventDefault();
+formulaire.addEventListener("submit", function(e) {
+    e.preventDefault();
     
     // récupérer les données email et mot de passe, les lier au code html
     const email = document.getElementById("email").value;

@@ -140,10 +140,10 @@
 <aside>
 	<!-- div contenant la modale et les propriétés qui pourront être modifiées en JS -->
 	<div class="modal" id="modale-ouverture" aria-hidden="true" role="dialog" aria-modal="false">
-		<form class="modal-content" method="post" enctype="multipart/form-data" name="ajout">
+		<div class="modal-content">
 			<div id="btn-modal">
 				<button id="modal-retour">&larr;</button>
-				<button id="modal-close">&times;</button>
+				<button class="modal-close">&times;</button>
 			</div>
 			<p id="titre-galerie">Galerie photo</p>
 			<figure class="gallery-modal-figure">
@@ -153,7 +153,7 @@
 				<img src="assets/images/hotel-first-arte-new-delhi.png" alt="Hotel First Arte - New Delhi">
 				<figcaption>test bla bla</figcaption>
 			</figure>
-			<div class="ajout-form">
+			<form class="ajout-form" method="post" enctype="multipart/form-data" name="ajout">
 				<div id="ajout-img">
 					<img id="preview" src="./assets/icons/icone-photo-grise.png" alt="Instagram">
 					<label for="input-photo" id="label-input-photo">+ Ajouter photo</label>
@@ -169,11 +169,11 @@
 					<option value="2">Hotels &amp; restaurants</option>
 					<option value="3">Objets</option>
 				</select>
-			</div>
+				<input id="btn-valider-deux" type="submit" value="Valider">
+			</form>
 			<button type="button" id="btn-valider">Ajouter une photo</button>
-			<input id="btn-valider-deux" type="submit" value="Valider">
 			<p id="suppr-modal">Supprimer la galerie</p>	
-		</form>
+		</div>
 	</div>
 
 </aside>

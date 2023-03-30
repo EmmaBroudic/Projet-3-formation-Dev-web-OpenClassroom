@@ -13,6 +13,7 @@ works.forEach(work => {
     const figure = document.createElement("figure");
     const image = document.createElement("img");
     const figcaption = document.createElement("figcaption");
+    
     // Écouter l'événement personnalisé "workDeleted" et supprimer de la galerie les éléments qui auront été sélectionnés
     gallery.addEventListener("workDeleted", (event) => {
         const id = event.detail.id;
@@ -22,10 +23,12 @@ works.forEach(work => {
         }
     });
 
+    // lier chaque élement récupéré via l'API au code HTML
     image.src = work.imageUrl;
     figcaption.textContent = work.title;
     figure.dataset.id = work.id;
 
+    // créer le DOM
     gallery.appendChild(figure);
     figure.appendChild(image);
     figure.appendChild(figcaption);
@@ -171,7 +174,7 @@ if (user) {
     // Lier les éléments de la modale en HTML au script JS
 
     const modalTrigger = document.querySelectorAll(".modal-trigger");
-    const modalClose = document.querySelectorAll("#modal-close");
+    const modalClose = document.querySelectorAll(".modal-close");
     const modalOverlay = document.querySelector(".modal");
 
 
@@ -309,6 +312,7 @@ if (user) {
                     });
                 });
             });
+
 
             // Afficher les travaux
             const reponse = await fetch("http://localhost:5678/api/works");
