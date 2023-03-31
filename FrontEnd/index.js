@@ -211,20 +211,16 @@ if (user) {
             formulaireModal.style.display = "none";
             boutonAjoutPhotoValider.style.display = "none";
 
-            // Empêcher la propagation de l'événement de clic vers la modale lorsque l'utilisateur clique sur le bouton #btn-valider
+            // Changer le contenu de la modale après le click sur le bouton ajouter photo
             boutonAjoutPhoto.addEventListener("click", (e) => {
                 e.stopPropagation();
-            });
-
-            // Changer le contenu de la modale après le click sur le bouton ajouter photo
-            boutonAjoutPhoto.addEventListener("click", function () {
                 titreGallery.innerHTML = "Ajout photo";
                 galleryModal.style.display = "none";
                 formulaireModal.style.display = "flex";
                 boutonAjoutPhoto.style.display = "none";
                 boutonAjoutPhotoValider.style.display = "block";
                 supprP.innerHTML = "";
-                
+                    
                 let imageInput = document.getElementById("input-photo");
                 const labelImageInput = document.getElementById("label-input-photo");
 
@@ -235,16 +231,16 @@ if (user) {
                 const text = document.getElementById("text-ajout");
                 const preview = document.getElementById("preview");
                 const fond = document.getElementById("ajout-img");
-            
+                
                 imageInput.addEventListener("change", () => {
-                  const file = imageInput.files[0];
-                  const reader = new FileReader();
-            
-                  reader.addEventListener("load", () => {
+                const file = imageInput.files[0];
+                const reader = new FileReader();
+                
+                reader.addEventListener("load", () => {
                     preview.setAttribute("src", reader.result);
-                  });
-            
-                  if (file) {
+                });
+                
+                if (file) {
                     imageInput.style.display = "none";
                     labelImageInput.style.display = "none";
                     text.style.display ="none";
@@ -254,19 +250,20 @@ if (user) {
                     fond.style.padding = "0";
                     boutonAjoutPhotoValider.style.backgroundColor = "#1D6154";
                     reader.readAsDataURL(file);
-                  }
-                });
-                
+                }
+            });
+                    
                 // click sur le bouton Valider - méthode fetch envoi données à l'API
                 formAjoutPhoto.addEventListener("submit", function (e) {
                     e.preventDefault();
+                    e.stopPropagation();
 
                     let titleInput = document.getElementById("title");
                     let categoryInput = document.getElementById("category");
 
                     // test console
                     console.log(imageInput, titleInput, categoryInput);
-                    
+                        
                     // Créer un objet FormData pour stocker les données
                     let formData = new FormData();
                     formData.append("image", imageInput.files[0]);
@@ -283,28 +280,29 @@ if (user) {
                         body: formData,
                         headers: { 'Accept': 'application/json',
                                     'authorization': `Bearer ${user}`,
-                                 }
+                                }
                     })
-              
+                
                     // Gérer la réponse de l'API
                     .then(resp => {
                         // Vérifier si la réponse est ok
                         if(resp.ok) {
                         // Traiter la réponse de l'API
                         console.log("ok");
+                        alert("Ajout réussi !");
                         return resp.json();
                         } else {
-                        // Gérer l'erreur si la réponse n'est pas ok
-                        throw new Error("Erreur lors de l'envoi des données");
+                        // informer l'utilisateur de l'échec de la requête
+                        alert("Echec");
                         }
                     })
-                
+                    
                     // Traiter la réponse de l'API
                     .then(data => {
                         // Verif
                         console.log(data);
                     })
-                    
+                        
                     // Gérer les erreurs
                     .catch(error => {
                         console.error(error);
@@ -346,9 +344,9 @@ if (user) {
 
                 // boucle de la galerie modale actualisée en fonction de la suppression des éléments
                 corbeilleIcons.forEach(corbeilleIcon => {
-                    corbeilleIcon.addEventListener("click", function (event) {
-                        event.stopPropagation();
-                        
+                    corbeilleIcon.addEventListener("click", function (e) {
+                        e.stopPropagation();
+                        e.preventDefault();
                         // récupérer l'identifiant du travail cliqué
                         const id = this.closest("figure").dataset.id;
 
@@ -398,6 +396,7 @@ if (user) {
                 modal.setAttribute("aria-hidden", "true");
                 modal.setAttribute("aria-modal", "false");
                 modal.style.display = "none";
+                location.reload();
             });
         }
     });
