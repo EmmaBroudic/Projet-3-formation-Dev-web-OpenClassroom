@@ -222,7 +222,7 @@ footer nav ul {
 
 #mdp-oublie {
 	font-family: 'Syne';
-	text-decoration: none;
+	text-decoration: underline;
 	border: none;
 	background-color: white;
 }
@@ -487,8 +487,6 @@ footer nav ul {
 	background-color: #DCDCDC;
 	border: 0px;
 	margin-top: 50px;
-	margin-left : 2em auto;
-	margin-right: 2em auto;
 	width: 150px;
 	text-align: center;
 	border-radius: 60px;
