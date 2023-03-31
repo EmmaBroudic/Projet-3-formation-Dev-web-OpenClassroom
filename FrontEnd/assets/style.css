@@ -395,7 +395,6 @@ footer nav ul {
 	display: flex;
 	flex-direction: column;
 	grid-row-gap: 10px;
-	border-bottom: 1px solid grey;
 	padding-bottom: 30px;
 	padding-top: 30px;
 }
@@ -417,7 +416,7 @@ footer nav ul {
 
 .ajout-form select {
 	margin-top: 3px;
-	margin-bottom: 2px;
+	margin-bottom: 20px;
 	background-color: white;
 	height: 40px;
 	font-family: 'Work Sans';
@@ -453,7 +452,11 @@ footer nav ul {
 	width: 180px;
 	text-align: center;
 	border-radius: 60px;
-	padding: 10px;
+	/*padding: 10px;*/
+}
+
+#border-btn-deux {
+	border-top: 1px solid grey;
 }
 
 /* Propriétés du bloc ajout img dans la modale formulaire */

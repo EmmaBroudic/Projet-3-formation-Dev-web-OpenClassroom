@@ -8,21 +8,64 @@ const gallery = document.querySelector(".gallery");
 // Invisibiliser le contenu HTML de la galerie travaux
 gallery.innerHTML = "";
 
+// Écouter l'événement personnalisé "workDeleted" et supprimer de la galerie les éléments qui auront été sélectionnés
+gallery.addEventListener("workDeleted", (e) => {
+
+    console.log("test-quatre");
+    const id = e.detail.id;
+    const galleryItem = document.querySelector(`[data-id="${id}"]`);
+    if (galleryItem) {
+        galleryItem.remove();
+    }
+});
+
+gallery.addEventListener("WorkAdd", (e) => {
+    
+    console.log("test-trois");
+    const id = e.detail.id;
+    console.log(id);
+    const img = e.detail.img;
+    console.log(img); // ajouter img à l'élément image du DOM
+    /*const cat = e.detail.cat;
+    console.log(cat);*/
+    const titl = e.detail.titl;
+    console.log(titl); // ajouter titl à l'élément figcaption du DOM
+
+    // Création d'un nouvel élément figure
+    const newFigure = document.createElement("figure");
+
+    // Création d'un nouvel élément img
+    const newImage = document.createElement("img");
+    newImage.src = img;
+
+    // Création d'un nouvel élément figcaption
+    const newFigcaption = document.createElement("figcaption");
+    newFigcaption.textContent = titl;
+
+    // Ajout de l'élément img et figcaption à l'élément figure
+    newFigure.appendChild(newImage);
+    newFigure.appendChild(newFigcaption);
+
+    // Ajout de l'attribut "data-id" à l'élément figure
+    newFigure.dataset.id = id;
+
+    // Ajout de l'élément figure à la galerie
+    gallery.appendChild(newFigure);
+    
+    /*
+    if (id) {
+        console.log("test-six");
+        gallery.add(id);
+        console.log("test-cinq");
+    }*/
+});
+
 // Afficher tous les travaux
 works.forEach(work => {
     const figure = document.createElement("figure");
     const image = document.createElement("img");
     const figcaption = document.createElement("figcaption");
     
-    // Écouter l'événement personnalisé "workDeleted" et supprimer de la galerie les éléments qui auront été sélectionnés
-    gallery.addEventListener("workDeleted", (event) => {
-        const id = event.detail.id;
-        const galleryItem = document.querySelector(`[data-id="${id}"]`);
-        if (galleryItem) {
-            galleryItem.remove();
-        }
-    });
-
     // lier chaque élement récupéré via l'API au code HTML
     image.src = work.imageUrl;
     figcaption.textContent = work.title;
@@ -291,16 +334,37 @@ if (user) {
                         console.log("ok");
                         alert("Ajout réussi !");
                         return resp.json();
+                        // Déclencher un événement personnalisé "workAdd"
+                        
                         } else {
                         // informer l'utilisateur de l'échec de la requête
                         alert("Echec");
                         }
                     })
-                    
+
                     // Traiter la réponse de l'API
                     .then(data => {
                         // Verif
                         console.log(data);
+                        const id = data.id;
+                        const img = data.imageUrl;
+                        const titl = data.title;
+                        const cat = data.categoryId; // ou data["_id"], selon la structure de la réponse de l'API
+                        console.log(`Identifiant généré : ${id}`);
+                        console.log(id);
+
+                        if (id) {
+                            console.log("test");
+                            console.log(id);
+                            console.log(titl);
+                            console.log(cat);
+                            console.log(img);
+
+                            // Déclenchement d'un événement personnalisé pour actualiser le DOM ailleurs
+                            const actuGalerie = new CustomEvent("WorkAdd", { detail: { id, img, titl, cat } });
+                            gallery.dispatchEvent(actuGalerie);
+                          }
+
                     })
                         
                     // Gérer les erreurs
@@ -364,7 +428,9 @@ if (user) {
 
                             // Supprimer l'élément correspondant dans la galerie principale (hors modale)
                             const galleryItem = document.querySelector(`[data-id="${id}"]`);
+
                             if (galleryItem) {
+                                console.log("hello-chat");
                                 galleryItem.remove();
                                 // Déclencher un événement personnalisé "workDeleted"
                                 gallery.dispatchEvent(new CustomEvent("workDeleted", { detail: { id: id } }));
