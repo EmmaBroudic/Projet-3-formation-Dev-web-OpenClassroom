@@ -8,38 +8,59 @@ const gallery = document.querySelector(".gallery");
 // Invisibiliser le contenu HTML de la galerie travaux
 gallery.innerHTML = "";
 
-// Écouter l'événement personnalisé "workDeleted" et supprimer de la galerie les éléments qui auront été sélectionnés
+/* Écouter l'événement personnalisé "workDeleted" (lié au Fetch Méthode DELETE)
+et supprimer de la galerie les éléments qui auront été supprimés dans la modale
+
+Ces fonctionnalités ne seront accessibles qu'à l'utilisateur connecté*/
 gallery.addEventListener("workDeleted", (e) => {
 
     console.log("test-quatre");
+
+    // Récupération de l'id du travail supprimé
     const id = e.detail.id;
+
+    // Lier le travail supprimé au travail présenté dans la galerie hors modale
     const galleryItem = document.querySelector(`[data-id="${id}"]`);
+
+    // Si id de travail supprimé, le supprimer de la galerie
     if (galleryItem) {
         galleryItem.remove();
     }
 });
 
+/* Écouter l'événement personnalisé "WorkAdd" (lié au Fetch Méthode POST)
+et ajouter dans la galerie les éléments qui auront été ajoutés dans la modale
+
+Ces fonctionnalités ne seront accessibles qu'à l'utilisateur connecté*/
 gallery.addEventListener("WorkAdd", (e) => {
     
     console.log("test-trois");
+
+    // Récupération de l'id du travail ajouté
     const id = e.detail.id;
     console.log(id);
+
+    // Récupération de l'image du travail ajouté
     const img = e.detail.img;
-    console.log(img); // ajouter img à l'élément image du DOM
-    /*const cat = e.detail.cat;
-    console.log(cat);*/
+    console.log(img);
+    
+    // Récupération du titre du travail ajouté
     const titl = e.detail.titl;
-    console.log(titl); // ajouter titl à l'élément figcaption du DOM
+    console.log(titl);
 
     // Création d'un nouvel élément figure
     const newFigure = document.createElement("figure");
 
     // Création d'un nouvel élément img
     const newImage = document.createElement("img");
+
+    // Source de l'image -> élément récupéré dans la constante img ci-dessus
     newImage.src = img;
 
     // Création d'un nouvel élément figcaption
     const newFigcaption = document.createElement("figcaption");
+
+    // Source du titre -> élément récupéré dans la constante titl ci-dessus
     newFigcaption.textContent = titl;
 
     // Ajout de l'élément img et figcaption à l'élément figure
@@ -51,18 +72,15 @@ gallery.addEventListener("WorkAdd", (e) => {
 
     // Ajout de l'élément figure à la galerie
     gallery.appendChild(newFigure);
-    
-    /*
-    if (id) {
-        console.log("test-six");
-        gallery.add(id);
-        console.log("test-cinq");
-    }*/
 });
 
-// Afficher tous les travaux
+// Afficher tous les travaux dans la galerie principale (hors modale)
 works.forEach(work => {
+
+    // Création d'une constante figure (élément parent) qui contiendra les éléments (enfants) image et figcaption
     const figure = document.createElement("figure");
+
+    // Création de constantes pour les éléments image et titre (figcaption)
     const image = document.createElement("img");
     const figcaption = document.createElement("figcaption");
     
@@ -72,30 +90,37 @@ works.forEach(work => {
     figure.dataset.id = work.id;
 
     // créer le DOM
+    // Element parent du DOM
     gallery.appendChild(figure);
+    // ELements enfants du DOM
     figure.appendChild(image);
     figure.appendChild(figcaption);
 });
 
-// Tri à partir des filtres
+// Tri à partir des filtres accessible à l'utilisateur hors connexion
 
 // bouton sélectionner tout
 const boutonTous = document.querySelector(".btn-tous");
+
+// Ecouter l'événement click pour filtrer en fonction des paramètres sélectionnés
 
 boutonTous.addEventListener("click", function () {
     
 // Invisibiliser le contenu HTML de la galerie travaux
     gallery.innerHTML = "";
 
-// Afficher les travaux
+// Afficher tous les travaux
     works.forEach(work => {
+        // Création des éléments parents et enfants qui composeront le DOM
         const figure = document.createElement("figure");
         const image = document.createElement("img");
         const figcaption = document.createElement("figcaption");
 
+        // Lier les éléments récupérés via l'API au code HTML
         image.src = work.imageUrl;
         figcaption.textContent = work.title;
 
+        // créer le DOM
         gallery.appendChild(figure);
         figure.appendChild(image);
         figure.appendChild(figcaption);
@@ -106,8 +131,10 @@ boutonTous.addEventListener("click", function () {
 
 const boutonTrierObj = document.querySelector(".btn-trier-obj");
 
+// Ecouter l'événement click pour filtrer en fonction des paramètres sélectionnés
+
 boutonTrierObj.addEventListener("click", function () {
-    // récupérer les travaux correspondant à la catégorie "Objets"
+    // récupérer les travaux correspondant à la catégorie "Objets" (Identifiant de la catégorie objet : 1)
     const objets = works.filter(work => work.categoryId === 1);
 
     console.log(works);
@@ -118,13 +145,17 @@ boutonTrierObj.addEventListener("click", function () {
 
     // afficher les travaux correspondant à la catégorie "Objets"
     objets.forEach(objet => {
+
+        // Création des éléments parents et enfants qui composeront le DOM
         const figure = document.createElement("figure");
         const image = document.createElement("img");
         const figcaption = document.createElement("figcaption");
 
+        // Lier les éléments récupérés via l'API au code HTML
         image.src = objet.imageUrl;
         figcaption.textContent = objet.title;
 
+        // créer le DOM
         gallery.appendChild(figure);
         figure.appendChild(image);
         figure.appendChild(figcaption);
@@ -135,8 +166,10 @@ boutonTrierObj.addEventListener("click", function () {
 
 const boutonTrierAppt = document.querySelector(".btn-trier-appt");
 
+// Ecouter l'événement click pour filtrer en fonction des paramètres sélectionnés
+
 boutonTrierAppt.addEventListener("click", function () {
-    // récupérer les travaux correspondant à la catégorie "Appartements"
+    // récupérer les travaux correspondant à la catégorie "Appartements" - identifiant de cette catégorie : 2
     const appartements = works.filter(work => work.categoryId === 2);
 
     console.log(works);
@@ -147,6 +180,8 @@ boutonTrierAppt.addEventListener("click", function () {
 
     // afficher les travaux correspondant à la catégorie "Appartements"
     appartements.forEach(appartement => {
+
+        // Création des éléments parents et enfants qui composeront le DOM
         const figure = document.createElement("figure");
         const image = document.createElement("img");
         const figcaption = document.createElement("figcaption");
@@ -180,9 +215,11 @@ boutonTrierHotels.addEventListener("click", function () {
         const image = document.createElement("img");
         const figcaption = document.createElement("figcaption");
 
+        // Lier les éléments récupérés via l'API au code HTML
         image.src = hotel.imageUrl;
         figcaption.textContent = hotel.title;
 
+        // créer le DOM
         gallery.appendChild(figure);
         figure.appendChild(image);
         figure.appendChild(figcaption);
@@ -223,9 +260,15 @@ if (user) {
 
     // Ouvrir la modale
     modalTrigger.forEach(trigger => {
+
+        //  Ecouter l'événement click pour ouvrir la modale
         trigger.addEventListener("click", async (e) => {
-            e.stopPropagation(); // empêcher la propagation de l'événement "click"
+            // empêcher la propagation de l'événement "click"
+            e.stopPropagation();
+
+            // Lier la constante target à la modale en HTML
             const target = document.querySelector(trigger.getAttribute("data-modal-target"));
+            
             // changer les propriétés de la balise modale (.modal)
             target.setAttribute("aria-hidden", "false");
             target.setAttribute("aria-modal", "true");
@@ -237,7 +280,7 @@ if (user) {
             // créer une constante formulaireModal qui est liée à l'HTML
             const formulaireModal = document.querySelector(".ajout-form");
 
-            //créer une constante pout le titre galerie qui est liée à l'HTML
+            //créer une constante pour le titre galerie qui est liée à l'HTML
             const titreGallery = document.querySelector("#titre-galerie");
 
             //créer une constante pout le titre supprimer modale qui est liée à l'HTML
@@ -255,34 +298,46 @@ if (user) {
             boutonAjoutPhotoValider.style.display = "none";
 
             // Changer le contenu de la modale après le click sur le bouton ajouter photo
+            //  Ecouter l'événement click pour ouvrir la modale
             boutonAjoutPhoto.addEventListener("click", (e) => {
+                // empêcher la propagation de l'événement "click"
                 e.stopPropagation();
+
+                // transformer le contenu de la modale pour afficher le formulaire d'ajout photo
                 titreGallery.innerHTML = "Ajout photo";
                 galleryModal.style.display = "none";
                 formulaireModal.style.display = "flex";
                 boutonAjoutPhoto.style.display = "none";
                 boutonAjoutPhotoValider.style.display = "block";
                 supprP.innerHTML = "";
-                    
+                
+                // Création d'une variable liée à l'HTML à l'input d'ajout d'image
                 let imageInput = document.getElementById("input-photo");
+
+                // Création d'une variable liée à l'HTML qui fait apparaître le bouton d'ajout photo
                 const labelImageInput = document.getElementById("label-input-photo");
 
                 // créer une variable liée au formulaire de la modale afin de permettre l'envoi de nouveaux travaux à l'API
                 let formAjoutPhoto = document.forms.namedItem("ajout");
 
-                // à commenter - ajout de la miniature
+                /* Création de variables liées à l'HTML pour faire apparaître la miniature
+                et transformer le fond de la zone ajout photo une fois l'image chargée */
                 const text = document.getElementById("text-ajout");
                 const preview = document.getElementById("preview");
                 const fond = document.getElementById("ajout-img");
                 
+                // Chargement de l'image -> apparaît en miniature
+                // Ecouter l'événement ajout de l'image
                 imageInput.addEventListener("change", () => {
                 const file = imageInput.files[0];
                 const reader = new FileReader();
                 
+                // Ecouter l'événement chargement de l'image
                 reader.addEventListener("load", () => {
                     preview.setAttribute("src", reader.result);
                 });
                 
+                // si image charger, transformation des CSS pour faire apparaître la miniature et changer le fond
                 if (file) {
                     imageInput.style.display = "none";
                     labelImageInput.style.display = "none";
@@ -298,9 +353,14 @@ if (user) {
                     
                 // click sur le bouton Valider - méthode fetch envoi données à l'API
                 formAjoutPhoto.addEventListener("submit", function (e) {
+
+                    // transformer le comportement par défaut de la soumission des données via le formulaire
                     e.preventDefault();
+
+                    // Eviter la propagation du click
                     e.stopPropagation();
 
+                    // Créer des variables liées aux inputs en HTML
                     let titleInput = document.getElementById("title");
                     let categoryInput = document.getElementById("category");
 
@@ -332,13 +392,16 @@ if (user) {
                         if(resp.ok) {
                         // Traiter la réponse de l'API
                         console.log("ok");
+
+                        // Message pour l'utilisateur
                         alert("Ajout réussi !");
+
+                        // Transformer les données au format JSON pour qu'elles soient reçues par l'API
                         return resp.json();
-                        // Déclencher un événement personnalisé "workAdd"
                         
                         } else {
                         // informer l'utilisateur de l'échec de la requête
-                        alert("Echec");
+                        alert("Le formulaire n'a pas été complété correctement");
                         }
                     })
 
@@ -346,6 +409,9 @@ if (user) {
                     .then(data => {
                         // Verif
                         console.log(data);
+
+                        /* créer des constantes liées à chaque élément de l'ajout de travail pour pouvoir
+                        actualiser le DOM de la galerie principale hors modale */
                         const id = data.id;
                         const img = data.imageUrl;
                         const titl = data.title;
@@ -360,7 +426,8 @@ if (user) {
                             console.log(cat);
                             console.log(img);
 
-                            // Déclenchement d'un événement personnalisé pour actualiser le DOM ailleurs
+                            /* Déclenchement d'un événement personnalisé pour actualiser le DOM
+                            dans la galerie principale hors modale */
                             const actuGalerie = new CustomEvent("WorkAdd", { detail: { id, img, titl, cat } });
                             gallery.dispatchEvent(actuGalerie);
                           }
@@ -376,27 +443,35 @@ if (user) {
             });
 
 
-            // Afficher les travaux
+            // Afficher les travaux au sein de la modale "galerie photos"
+
+            // Récupérer les données via l'API
             const reponse = await fetch("http://localhost:5678/api/works");
             const pieces = await reponse.json();
 
-            // boucle qui affiche chaque travaux dans la modale
+            // boucle qui affiche chaque travaux dans la modale galerie photos
             pieces.forEach(piece => {
+                // Création des éléments parents et enfants qui composeront le DOM de la galerie modale
                 const figure = document.createElement("figure");
                 const image = document.createElement("img");
                 const figcaption = document.createElement("figcaption");
+                // création d'une constante pour bouton de suppression des travaux
                 const deleteButton = document.createElement("button");
+                // création d'une constante pour icone corbeille
                 const corbeilleIcon = document.createElement("i");
 
                 // Affichage du contenu galerie de la modale
+                // Image d'un des travaux
                 image.src = piece.imageUrl;
+                // texte affiché sous l'image
                 figcaption.innerHTML = "éditer";
+                // icone corbeille qui servira de bouton de suppression des travaux
                 corbeilleIcon.className = "fas fa-trash suppr";
 
                 // ajout d'un id qui permettra de supprimer les travaux
                 figure.dataset.id = piece.id;
 
-                // construction du DOM
+                // construction du DOM au sein de la modale
                 galleryModal.appendChild(figure);
                 figure.appendChild(deleteButton);
                 figure.appendChild(corbeilleIcon);
@@ -408,8 +483,11 @@ if (user) {
 
                 // boucle de la galerie modale actualisée en fonction de la suppression des éléments
                 corbeilleIcons.forEach(corbeilleIcon => {
+                    //Ecouter l'événement click pour suppression des travaux
                     corbeilleIcon.addEventListener("click", function (e) {
+                        // Eviter la propagation du click
                         e.stopPropagation();
+                        // transformer le comportement par défaut de la soumission des données via le formulaire
                         e.preventDefault();
                         // récupérer l'identifiant du travail cliqué
                         const id = this.closest("figure").dataset.id;
@@ -427,10 +505,12 @@ if (user) {
                             figure.remove();
 
                             // Supprimer l'élément correspondant dans la galerie principale (hors modale)
+                            // Lier l'id de l'élément supprimé au code html
                             const galleryItem = document.querySelector(`[data-id="${id}"]`);
 
+                            // si élément supprimer le retirer de la galerie principale
                             if (galleryItem) {
-                                console.log("hello-chat");
+                                console.log("hello2");
                                 galleryItem.remove();
                                 // Déclencher un événement personnalisé "workDeleted"
                                 gallery.dispatchEvent(new CustomEvent("workDeleted", { detail: { id: id } }));
@@ -444,9 +524,13 @@ if (user) {
 
     // Fermer la modale
     modalClose.forEach(close => {
+        // Ecouter l'événement click pour fermeture modale
         close.addEventListener("click", (e) => {
+            // Eviter la propagation du click
             e.stopPropagation();
+            // Création d'une constante modal qui est liée au code HTML
             const modal = close.closest(".modal");
+            // transformer les attributs de la balise qui possède la class .modal
             modal.setAttribute("aria-hidden", "true");
             modal.setAttribute("aria-modal", "false");
             modal.style.display = "none";
@@ -454,30 +538,35 @@ if (user) {
     });
 
     // Masquer la modale lorsqu'on clique en dehors de celle-ci
+    // Ecouter l'événement click
     modalOverlay.addEventListener("click", (e) => {
+        // Condition qui permet fermeture modale quand on click en dehors
         if (e.target === modalOverlay) {
+            // Eviter la propagation du click
             e.stopPropagation();
+            // Fermeture modale
             modalClose.forEach(close => {
                 const modal = close.closest(".modal");
                 modal.setAttribute("aria-hidden", "true");
                 modal.setAttribute("aria-modal", "false");
                 modal.style.display = "none";
+                // Rechargement de la page à la fermeture modale
                 location.reload();
             });
         }
     });
 
 } else {
-    // Afficher l'onglet login
+    // Afficher l'onglet login sur l'utilisateur n'est pas connecté
     login.style.display = "block";
 
-    // Masquer les boutons modifier
+    // Masquer les boutons modifier (fonctionnalités accessibles en mode connecté)
     const modif = document.querySelectorAll(".modifier");
     for (let i = 0; i < modif.length; i++) {
         modif[i].innerHTML ="";
     }
 
-    // Masquer le bouton d'ouverture de la modale
+    // Masquer le bouton d'ouverture de la modale (fonctionnalités accessibles en mode connecté)
     const modifProjets = document.querySelector("#modifier-mes-projets");
     modifProjets.innerHTML = "";
 }

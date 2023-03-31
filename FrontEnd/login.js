@@ -5,6 +5,8 @@ const submitButton = document.querySelector(".submit-btn");
 
 // activer le click à la soumission des données formulaires (email et mot de passe)
 formulaire.addEventListener("submit", function(e) {
+
+    // transformer le comportement par défaut du bouton submit
     e.preventDefault();
     
     // récupérer les données email et mot de passe, les lier au code html
@@ -33,6 +35,7 @@ formulaire.addEventListener("submit", function(e) {
         
         // si les données sont les bonnes, connexion réussie
         if (data.token) {
+          // affichage du message pour l'utilisateur
           alert("Connexion réussie !");
           
           // conserver les données dans le local storage
@@ -51,6 +54,7 @@ formulaire.addEventListener("submit", function(e) {
           }
       })
       
+      // Gérer les erreurs
       .catch(error => console.error(error));
 });
 
