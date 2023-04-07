@@ -534,6 +534,7 @@ if (user) {
             modal.setAttribute("aria-hidden", "true");
             modal.setAttribute("aria-modal", "false");
             modal.style.display = "none";
+            location.reload();
         });
     });
 
