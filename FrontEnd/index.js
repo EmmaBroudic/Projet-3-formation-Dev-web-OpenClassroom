@@ -97,95 +97,6 @@ works.forEach(work => {
     figure.appendChild(figcaption);
 });
 
-
-
-
-/*
-// Tri à partir des filtres accessible à l'utilisateur hors connexion
-btnTous.addEventListener("click", function () {
-    
-    // Invisibiliser le contenu HTML de la galerie travaux
-    gallery.innerHTML = "";
-
-    // Afficher tous les travaux
-    travaux.forEach(travail => {
-        // Création des éléments parents et enfants qui composeront le DOM
-        const figure = document.createElement("figure");
-        const image = document.createElement("img");
-        const figcaption = document.createElement("figcaption");
-        
-        // Lier les éléments récupérés via l'API au code HTML
-        image.src = travail.imageUrl;
-        figcaption.textContent = travail.title;
-        
-        // créer le DOM
-        gallery.appendChild(figure);
-        figure.appendChild(image);
-        figure.appendChild(figcaption);
-    });
-
-});*/
-
-const filtres = document.querySelector(".filtres-bloc");
-
-fetch("http://localhost:5678/api/works")
-  .then(response => response.json())
-  .then(travaux => {
-    // Créer un tableau de toutes les catégories uniques
-    const categories = [];
-    travaux.forEach(travail => {
-      if (!categories.includes(travail.category.name)) {
-        categories.push(travail.category.name);
-      }
-    });
-    
-    // Créer un bouton pour chaque catégorie unique
-    categories.forEach(catName => {
-      const boutonsFiltres = document.createElement("button");
-      boutonsFiltres.textContent = catName;
-      boutonsFiltres.classList.add("btnsFiltres");
-      boutonsFiltres.classList.add("btn-tous");
-
-      filtres.appendChild(boutonsFiltres);
-
-      // addEventListener
-      boutonsFiltres.addEventListener("click", function () {
-
-        // Récupérer l'ID de la catégorie correspondante
-        const catId = travaux.find(travail => travail.category.name === catName).categoryId;
-
-        // Filtrer les travaux en fonction de l'ID de la catégorie
-        const filtresTravaux = travaux.filter(travail => travail.categoryId === catId);
-        
-        gallery.innerHTML = "";
-
-        filtresTravaux.forEach(filtreTravail => {
-            // Création des éléments parents et enfants qui composeront le DOM
-            const figure = document.createElement("figure");
-            const image = document.createElement("img");
-            const figcaption = document.createElement("figcaption");
-
-            // Lier les éléments récupérés via l'API au code HTML
-            image.src = filtreTravail.imageUrl;
-            figcaption.textContent = filtreTravail.title;
-
-            // créer le DOM
-            gallery.appendChild(figure);
-            figure.appendChild(image);
-            figure.appendChild(figcaption);
-        });
-      });
-    });
-  })
-  .catch(error => console.error(error));
-
-  // Rafraîchir la page pour faire apparaître tous les travaux quand on clique sur le bouton "tous"
-  const boutonTousLesTravaux = document.querySelector(".btn-tous");
-
-  boutonTousLesTravaux.addEventListener("click", function () {
-    location.reload();
- });
-
 // Options login et log out
 
 // Récupération du token dans le local Storage
@@ -207,6 +118,7 @@ if (user) {
     modifProjets.innerHTML = "";
 
     // faire disparaître les filtres
+    const filtres = document.querySelector(".filtres-bloc");
     //const mesFiltres = document.querySelector(".filtres-bloc");
     filtres.innerHTML = "";
 
@@ -252,10 +164,16 @@ if (user) {
             //créer une constante pour lier le bouton ajout photo à l'HTML
             const boutonAjoutPhotoValider = document.querySelector("#btn-valider-deux");
 
+            //créer une constante pour lier le bouton retour à l'HTML
+            const boutonRetour = document.querySelector("#modal-retour");
+
             // Invisibiliser le contenu HTML de la gallerie modale et du formulaire
             galleryModal.innerHTML = "";
             formulaireModal.style.display = "none";
             boutonAjoutPhotoValider.style.display = "none";
+
+            //effacer le bouton retour
+            boutonRetour.style.display = "none";
 
             // Changer le contenu de la modale après le click sur le bouton ajouter photo
             //  Ecouter l'événement click pour ouvrir la modale
@@ -270,6 +188,11 @@ if (user) {
                 boutonAjoutPhoto.style.display = "none";
                 boutonAjoutPhotoValider.style.display = "block";
                 supprP.innerHTML = "";
+                boutonRetour.style.display = "flex";
+
+                boutonRetour.addEventListener("click", (e) => {
+                    e.stopPropagation();
+                });
                 
                 // Création d'une variable liée à l'HTML à l'input d'ajout d'image
                 let imageInput = document.getElementById("input-photo");
@@ -405,80 +328,83 @@ if (user) {
 
             // Afficher les travaux au sein de la modale "galerie photos"
 
-            // Récupérer les données via l'API
-            const reponse = await fetch("http://localhost:5678/api/works");
-            const pieces = await reponse.json();
+            // Fonction qui construit la galerie modale et effectue la suppression des travaux
+            //async function buildModalGallery() {
+                // Récupérer les données via l'API
+                const reponse = await fetch("http://localhost:5678/api/works");
+                const pieces = await reponse.json();
 
-            // boucle qui affiche chaque travaux dans la modale galerie photos
-            pieces.forEach(piece => {
-                // Création des éléments parents et enfants qui composeront le DOM de la galerie modale
-                const figure = document.createElement("figure");
-                const image = document.createElement("img");
-                const figcaption = document.createElement("figcaption");
-                // création d'une constante pour bouton de suppression des travaux
-                const deleteButton = document.createElement("button");
-                // création d'une constante pour icone corbeille
-                const corbeilleIcon = document.createElement("i");
+                // boucle qui affiche chaque travaux dans la modale galerie photos
+                pieces.forEach(piece => {
+                    // Création des éléments parents et enfants qui composeront le DOM de la galerie modale
+                    const figure = document.createElement("figure");
+                    const image = document.createElement("img");
+                    const figcaption = document.createElement("figcaption");
+                    // création d'une constante pour bouton de suppression des travaux
+                    const deleteButton = document.createElement("button");
+                    // création d'une constante pour icone corbeille
+                    const corbeilleIcon = document.createElement("i");
 
-                // Affichage du contenu galerie de la modale
-                // Image d'un des travaux
-                image.src = piece.imageUrl;
-                // texte affiché sous l'image
-                figcaption.innerHTML = "éditer";
-                // icone corbeille qui servira de bouton de suppression des travaux
-                corbeilleIcon.className = "fas fa-trash suppr";
+                    // Affichage du contenu galerie de la modale
+                    // Image d'un des travaux
+                    image.src = piece.imageUrl;
+                    // texte affiché sous l'image
+                    figcaption.innerHTML = "éditer";
+                    // icone corbeille qui servira de bouton de suppression des travaux
+                    corbeilleIcon.className = "fas fa-trash suppr";
 
-                // ajout d'un id qui permettra de supprimer les travaux
-                figure.dataset.id = piece.id;
+                    // ajout d'un id qui permettra de supprimer les travaux
+                    figure.dataset.id = piece.id;
 
-                // construction du DOM au sein de la modale
-                galleryModal.appendChild(figure);
-                figure.appendChild(deleteButton);
-                figure.appendChild(corbeilleIcon);
-                figure.appendChild(image);
-                figure.appendChild(figcaption);
+                    // construction du DOM au sein de la modale
+                    galleryModal.appendChild(figure);
+                    figure.appendChild(deleteButton);
+                    figure.appendChild(corbeilleIcon);
+                    figure.appendChild(image);
+                    figure.appendChild(figcaption);
 
-                // Récupérer tous les éléments corbeilleIcon
-                const corbeilleIcons = document.querySelectorAll(".suppr");
+                    // Récupérer tous les éléments corbeilleIcon
+                    const corbeilleIcons = document.querySelectorAll(".suppr");
 
-                // boucle de la galerie modale actualisée en fonction de la suppression des éléments
-                corbeilleIcons.forEach(corbeilleIcon => {
-                    //Ecouter l'événement click pour suppression des travaux
-                    corbeilleIcon.addEventListener("click", function (e) {
-                        // Eviter la propagation du click
-                        e.stopPropagation();
-                        // transformer le comportement par défaut de la soumission des données via le formulaire
-                        e.preventDefault();
-                        // récupérer l'identifiant du travail cliqué
-                        const id = this.closest("figure").dataset.id;
+                    // boucle de la galerie modale actualisée en fonction de la suppression des éléments
+                    corbeilleIcons.forEach(corbeilleIcon => {
+                        //Ecouter l'événement click pour suppression des travaux
+                        corbeilleIcon.addEventListener("click", function (e) {
+                            // Eviter la propagation du click
+                            e.stopPropagation();
+                            // transformer le comportement par défaut de la soumission des données via le formulaire
+                            e.preventDefault();
+                            // récupérer l'identifiant du travail cliqué
+                            const id = this.closest("figure").dataset.id;
 
-                        // supprimer les éléments avec la méthode fetch DELETE
-                        fetch(`http://localhost:5678/api/works/${id}`, {
-                            method: 'DELETE',
-                            body: JSON.stringify({ id: id }),
-                            headers: { 'Accept': 'application/json',
-                                        'authorization': `Bearer ${user}`,
-                                        'Content-Type': 'application/json' }
-                        }).then(() => {
-                            // Supprimer l'élément parent "figure" du DOM
-                            const figure = this.closest("figure");
-                            figure.remove();
+                            // supprimer les éléments avec la méthode fetch DELETE
+                            fetch(`http://localhost:5678/api/works/${id}`, {
+                                method: 'DELETE',
+                                body: JSON.stringify({ id: id }),
+                                headers: { 'Accept': 'application/json',
+                                            'authorization': `Bearer ${user}`,
+                                            'Content-Type': 'application/json' }
+                            }).then(() => {
+                                // Supprimer l'élément parent "figure" du DOM
+                                const figure = this.closest("figure");
+                                figure.remove();
 
-                            // Supprimer l'élément correspondant dans la galerie principale (hors modale)
-                            // Lier l'id de l'élément supprimé au code html
-                            const galleryItem = document.querySelector(`[data-id="${id}"]`);
+                                // Supprimer l'élément correspondant dans la galerie principale (hors modale)
+                                // Lier l'id de l'élément supprimé au code html
+                                const galleryItem = document.querySelector(`[data-id="${id}"]`);
 
-                            // si élément supprimer le retirer de la galerie principale
-                            if (galleryItem) {
-                                console.log("hello2");
-                                galleryItem.remove();
-                                // Déclencher un événement personnalisé "workDeleted"
-                                gallery.dispatchEvent(new CustomEvent("workDeleted", { detail: { id: id } }));
-                            }
+                                // si élément supprimer le retirer de la galerie principale
+                                if (galleryItem) {
+                                    console.log("hello2");
+                                    galleryItem.remove();
+                                    // Déclencher un événement personnalisé "workDeleted"
+                                    gallery.dispatchEvent(new CustomEvent("workDeleted", { detail: { id: id } }));
+                                }
+                            });
                         });
                     });
                 });
-            });    
+           // };    
         });   
     });
 
@@ -530,6 +456,66 @@ if (user) {
     // Masquer le bouton d'ouverture de la modale (fonctionnalités accessibles en mode connecté)
     const modifProjets = document.querySelector("#modifier-mes-projets");
     modifProjets.innerHTML = "";
+
+    const filtres = document.querySelector(".filtres-bloc");
+
+    fetch("http://localhost:5678/api/works")
+    .then(response => response.json())
+    .then(travaux => {
+        // Créer un tableau de toutes les catégories uniques
+        const categories = [];
+        travaux.forEach(travail => {
+        if (!categories.includes(travail.category.name)) {
+            categories.push(travail.category.name);
+        }
+        });
+        
+        // Créer un bouton pour chaque catégorie unique
+        categories.forEach(catName => {
+        const boutonsFiltres = document.createElement("button");
+        boutonsFiltres.textContent = catName;
+        boutonsFiltres.classList.add("btnsFiltres");
+        boutonsFiltres.classList.add("btn-tous");
+
+        filtres.appendChild(boutonsFiltres);
+
+        // addEventListener
+        boutonsFiltres.addEventListener("click", function () {
+
+            // Récupérer l'ID de la catégorie correspondante
+            const catId = travaux.find(travail => travail.category.name === catName).categoryId;
+
+            // Filtrer les travaux en fonction de l'ID de la catégorie
+            const filtresTravaux = travaux.filter(travail => travail.categoryId === catId);
+            
+            gallery.innerHTML = "";
+
+            filtresTravaux.forEach(filtreTravail => {
+                // Création des éléments parents et enfants qui composeront le DOM
+                const figure = document.createElement("figure");
+                const image = document.createElement("img");
+                const figcaption = document.createElement("figcaption");
+
+                // Lier les éléments récupérés via l'API au code HTML
+                image.src = filtreTravail.imageUrl;
+                figcaption.textContent = filtreTravail.title;
+
+                // créer le DOM
+                gallery.appendChild(figure);
+                figure.appendChild(image);
+                figure.appendChild(figcaption);
+            });
+        });
+        });
+    })
+    .catch(error => console.error(error));
+
+    // Rafraîchir la page pour faire apparaître tous les travaux quand on clique sur le bouton "tous"
+    const boutonTousLesTravaux = document.querySelector(".btn-tous");
+
+    boutonTousLesTravaux.addEventListener("click", function () {
+        location.reload();
+    });
 }
 
 // Permettre à l'utilisateur de se déconnecter
