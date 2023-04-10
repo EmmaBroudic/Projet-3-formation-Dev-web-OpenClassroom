@@ -97,134 +97,94 @@ works.forEach(work => {
     figure.appendChild(figcaption);
 });
 
+
+
+
+/*
 // Tri à partir des filtres accessible à l'utilisateur hors connexion
-
-// bouton sélectionner tout
-const boutonTous = document.querySelector(".btn-tous");
-
-// Ecouter l'événement click pour filtrer en fonction des paramètres sélectionnés
-
-boutonTous.addEventListener("click", function () {
+btnTous.addEventListener("click", function () {
     
-// Invisibiliser le contenu HTML de la galerie travaux
+    // Invisibiliser le contenu HTML de la galerie travaux
     gallery.innerHTML = "";
 
-// Afficher tous les travaux
-    works.forEach(work => {
+    // Afficher tous les travaux
+    travaux.forEach(travail => {
         // Création des éléments parents et enfants qui composeront le DOM
         const figure = document.createElement("figure");
         const image = document.createElement("img");
         const figcaption = document.createElement("figcaption");
-
+        
         // Lier les éléments récupérés via l'API au code HTML
-        image.src = work.imageUrl;
-        figcaption.textContent = work.title;
-
+        image.src = travail.imageUrl;
+        figcaption.textContent = travail.title;
+        
         // créer le DOM
         gallery.appendChild(figure);
         figure.appendChild(image);
         figure.appendChild(figcaption);
+    });
+
+});*/
+
+const filtres = document.querySelector(".filtres-bloc");
+
+fetch("http://localhost:5678/api/works")
+  .then(response => response.json())
+  .then(travaux => {
+    // Créer un tableau de toutes les catégories uniques
+    const categories = [];
+    travaux.forEach(travail => {
+      if (!categories.includes(travail.category.name)) {
+        categories.push(travail.category.name);
+      }
+    });
+    
+    // Créer un bouton pour chaque catégorie unique
+    categories.forEach(catName => {
+      const boutonsFiltres = document.createElement("button");
+      boutonsFiltres.textContent = catName;
+      boutonsFiltres.classList.add("btnsFiltres");
+      boutonsFiltres.classList.add("btn-tous");
+
+      filtres.appendChild(boutonsFiltres);
+
+      // addEventListener
+      boutonsFiltres.addEventListener("click", function () {
+
+        // Récupérer l'ID de la catégorie correspondante
+        const catId = travaux.find(travail => travail.category.name === catName).categoryId;
+
+        // Filtrer les travaux en fonction de l'ID de la catégorie
+        const filtresTravaux = travaux.filter(travail => travail.categoryId === catId);
+        
+        gallery.innerHTML = "";
+
+        filtresTravaux.forEach(filtreTravail => {
+            // Création des éléments parents et enfants qui composeront le DOM
+            const figure = document.createElement("figure");
+            const image = document.createElement("img");
+            const figcaption = document.createElement("figcaption");
+
+            // Lier les éléments récupérés via l'API au code HTML
+            image.src = filtreTravail.imageUrl;
+            figcaption.textContent = filtreTravail.title;
+
+            // créer le DOM
+            gallery.appendChild(figure);
+            figure.appendChild(image);
+            figure.appendChild(figcaption);
         });
+      });
     });
+  })
+  .catch(error => console.error(error));
 
-// bouton sélectionner "Objets"
+  // Rafraîchir la page pour faire apparaître tous les travaux quand on clique sur le bouton "tous"
+  const boutonTousLesTravaux = document.querySelector(".btn-tous");
 
-const boutonTrierObj = document.querySelector(".btn-trier-obj");
-
-// Ecouter l'événement click pour filtrer en fonction des paramètres sélectionnés
-
-boutonTrierObj.addEventListener("click", function () {
-    // récupérer les travaux correspondant à la catégorie "Objets" (Identifiant de la catégorie objet : 1)
-    const objets = works.filter(work => work.categoryId === 1);
-
-    console.log(works);
-    console.log(objets);
-
-    // supprimer les travaux précédemment affichés dans la galerie
-    gallery.innerHTML = "";
-
-    // afficher les travaux correspondant à la catégorie "Objets"
-    objets.forEach(objet => {
-
-        // Création des éléments parents et enfants qui composeront le DOM
-        const figure = document.createElement("figure");
-        const image = document.createElement("img");
-        const figcaption = document.createElement("figcaption");
-
-        // Lier les éléments récupérés via l'API au code HTML
-        image.src = objet.imageUrl;
-        figcaption.textContent = objet.title;
-
-        // créer le DOM
-        gallery.appendChild(figure);
-        figure.appendChild(image);
-        figure.appendChild(figcaption);
-    });
-});
-
-// bouton sélectionner Appartements
-
-const boutonTrierAppt = document.querySelector(".btn-trier-appt");
-
-// Ecouter l'événement click pour filtrer en fonction des paramètres sélectionnés
-
-boutonTrierAppt.addEventListener("click", function () {
-    // récupérer les travaux correspondant à la catégorie "Appartements" - identifiant de cette catégorie : 2
-    const appartements = works.filter(work => work.categoryId === 2);
-
-    console.log(works);
-    console.log(appartements);
-
-    // supprimer les travaux précédemment affichés dans la galerie
-    gallery.innerHTML = "";
-
-    // afficher les travaux correspondant à la catégorie "Appartements"
-    appartements.forEach(appartement => {
-
-        // Création des éléments parents et enfants qui composeront le DOM
-        const figure = document.createElement("figure");
-        const image = document.createElement("img");
-        const figcaption = document.createElement("figcaption");
-
-        image.src = appartement.imageUrl;
-        figcaption.textContent = appartement.title;
-
-        gallery.appendChild(figure);
-        figure.appendChild(image);
-        figure.appendChild(figcaption);
-    });
-});
-
-// bouton sélectionner "Hôtels & restaurants"
-
-const boutonTrierHotels = document.querySelector(".btn-trier-hotel");
-
-boutonTrierHotels.addEventListener("click", function () {
-    // récupérer les travaux correspondant à la catégorie "Appartements"
-    const hotels = works.filter(work => work.categoryId === 3);
-
-    console.log(works);
-    console.log(hotels);
-
-    // supprimer les travaux précédemment affichés dans la galerie
-    gallery.innerHTML = "";
-
-    // afficher les travaux correspondant à la catégorie "Appartements"
-    hotels.forEach(hotel => {
-        const figure = document.createElement("figure");
-        const image = document.createElement("img");
-        const figcaption = document.createElement("figcaption");
-
-        // Lier les éléments récupérés via l'API au code HTML
-        image.src = hotel.imageUrl;
-        figcaption.textContent = hotel.title;
-
-        // créer le DOM
-        gallery.appendChild(figure);
-        figure.appendChild(image);
-        figure.appendChild(figcaption);
-    });
-});
+  boutonTousLesTravaux.addEventListener("click", function () {
+    location.reload();
+ });
 
 // Options login et log out
 
@@ -247,8 +207,8 @@ if (user) {
     modifProjets.innerHTML = "";
 
     // faire disparaître les filtres
-    const mesFiltres = document.querySelector(".filtres-bloc");
-    mesFiltres.innerHTML = "";
+    //const mesFiltres = document.querySelector(".filtres-bloc");
+    filtres.innerHTML = "";
 
     // code modale
     // Lier les éléments de la modale en HTML au script JS
