@@ -175,6 +175,86 @@ if (user) {
             //effacer le bouton retour
             boutonRetour.style.display = "none";
 
+            // Afficher les travaux au sein de la modale "galerie photos"
+
+            // Fonction qui construit la galerie modale et effectue la suppression des travaux
+            async function buildModalGallery() {
+                // Récupérer les données via l'API
+                const reponse = await fetch("http://localhost:5678/api/works");
+                const pieces = await reponse.json();
+
+                // boucle qui affiche chaque travaux dans la modale galerie photos
+                pieces.forEach(piece => {
+                    // Création des éléments parents et enfants qui composeront le DOM de la galerie modale
+                    const figure = document.createElement("figure");
+                    const image = document.createElement("img");
+                    const figcaption = document.createElement("figcaption");
+                    // création d'une constante pour bouton de suppression des travaux
+                    const deleteButton = document.createElement("button");
+                    // création d'une constante pour icone corbeille
+                    const corbeilleIcon = document.createElement("i");
+
+                    // Affichage du contenu galerie de la modale
+                    // Image d'un des travaux
+                    image.src = piece.imageUrl;
+                    // texte affiché sous l'image
+                    figcaption.innerHTML = "éditer";
+                    // icone corbeille qui servira de bouton de suppression des travaux
+                    corbeilleIcon.className = "fas fa-trash suppr";
+
+                    // ajout d'un id qui permettra de supprimer les travaux
+                    figure.dataset.id = piece.id;
+
+                    // construction du DOM au sein de la modale
+                    galleryModal.appendChild(figure);
+                    figure.appendChild(deleteButton);
+                    figure.appendChild(corbeilleIcon);
+                    figure.appendChild(image);
+                    figure.appendChild(figcaption);
+
+                    // Récupérer tous les éléments corbeilleIcon
+                    const corbeilleIcons = document.querySelectorAll(".suppr");
+
+                    // boucle de la galerie modale actualisée en fonction de la suppression des éléments
+                    corbeilleIcons.forEach(corbeilleIcon => {
+                        //Ecouter l'événement click pour suppression des travaux
+                        corbeilleIcon.addEventListener("click", function (e) {
+                            // Eviter la propagation du click
+                            e.stopPropagation();
+                            // transformer le comportement par défaut de la soumission des données via le formulaire
+                            e.preventDefault();
+                            // récupérer l'identifiant du travail cliqué
+                            const id = this.closest("figure").dataset.id;
+
+                            // supprimer les éléments avec la méthode fetch DELETE
+                            fetch(`http://localhost:5678/api/works/${id}`, {
+                                method: 'DELETE',
+                                body: JSON.stringify({ id: id }),
+                                headers: { 'Accept': 'application/json',
+                                            'authorization': `Bearer ${user}`,
+                                            'Content-Type': 'application/json' }
+                            }).then(() => {
+                                // Supprimer l'élément parent "figure" du DOM
+                                const figure = this.closest("figure");
+                                figure.remove();
+
+                                // Supprimer l'élément correspondant dans la galerie principale (hors modale)
+                                // Lier l'id de l'élément supprimé au code html
+                                const galleryItem = document.querySelector(`[data-id="${id}"]`);
+
+                                // si élément supprimer le retirer de la galerie principale
+                                if (galleryItem) {
+                                    console.log("hello2");
+                                    galleryItem.remove();
+                                    // Déclencher un événement personnalisé "workDeleted"
+                                    gallery.dispatchEvent(new CustomEvent("workDeleted", { detail: { id: id } }));
+                                }
+                            });
+                        });
+                    });
+                });
+           }
+
             // Changer le contenu de la modale après le click sur le bouton ajouter photo
             //  Ecouter l'événement click pour ouvrir la modale
             boutonAjoutPhoto.addEventListener("click", (e) => {
@@ -192,6 +272,20 @@ if (user) {
 
                 boutonRetour.addEventListener("click", (e) => {
                     e.stopPropagation();
+                    e.preventDefault();
+
+                    // Vider la galerie
+                    galleryModal.querySelectorAll('figure').forEach(el => el.remove());
+                
+                    buildModalGallery();
+                    formulaireModal.style.display = "none";
+                    titreGallery.innerHTML = "Galerie photo 2";
+                    galleryModal.style.display = "grid";
+                    boutonAjoutPhoto.style.display = "flex";
+                    boutonAjoutPhotoValider.style.display = "none";
+                    supprP.innerHTML = "Supprimer la galerie";
+                    //effacer le bouton retour
+                    boutonRetour.style.display = "none";
                 });
                 
                 // Création d'une variable liée à l'HTML à l'input d'ajout d'image
@@ -275,12 +369,18 @@ if (user) {
                         if(resp.ok) {
                         // Traiter la réponse de l'API
                         console.log("ok");
-
                         // Message pour l'utilisateur
                         alert("Ajout réussi !");
+                        e.stopPropagation();
+                        e.preventDefault();
+                        imageInput.value = null;
+                        imageInput.style.display = "block";
+                        labelImageInput.style.display = "block";
+                        //console.log(file);
 
                         // Transformer les données au format JSON pour qu'elles soient reçues par l'API
                         return resp.json();
+                        
                         
                         } else {
                         // informer l'utilisateur de l'échec de la requête
@@ -325,86 +425,7 @@ if (user) {
                 });
             });
 
-
-            // Afficher les travaux au sein de la modale "galerie photos"
-
-            // Fonction qui construit la galerie modale et effectue la suppression des travaux
-            //async function buildModalGallery() {
-                // Récupérer les données via l'API
-                const reponse = await fetch("http://localhost:5678/api/works");
-                const pieces = await reponse.json();
-
-                // boucle qui affiche chaque travaux dans la modale galerie photos
-                pieces.forEach(piece => {
-                    // Création des éléments parents et enfants qui composeront le DOM de la galerie modale
-                    const figure = document.createElement("figure");
-                    const image = document.createElement("img");
-                    const figcaption = document.createElement("figcaption");
-                    // création d'une constante pour bouton de suppression des travaux
-                    const deleteButton = document.createElement("button");
-                    // création d'une constante pour icone corbeille
-                    const corbeilleIcon = document.createElement("i");
-
-                    // Affichage du contenu galerie de la modale
-                    // Image d'un des travaux
-                    image.src = piece.imageUrl;
-                    // texte affiché sous l'image
-                    figcaption.innerHTML = "éditer";
-                    // icone corbeille qui servira de bouton de suppression des travaux
-                    corbeilleIcon.className = "fas fa-trash suppr";
-
-                    // ajout d'un id qui permettra de supprimer les travaux
-                    figure.dataset.id = piece.id;
-
-                    // construction du DOM au sein de la modale
-                    galleryModal.appendChild(figure);
-                    figure.appendChild(deleteButton);
-                    figure.appendChild(corbeilleIcon);
-                    figure.appendChild(image);
-                    figure.appendChild(figcaption);
-
-                    // Récupérer tous les éléments corbeilleIcon
-                    const corbeilleIcons = document.querySelectorAll(".suppr");
-
-                    // boucle de la galerie modale actualisée en fonction de la suppression des éléments
-                    corbeilleIcons.forEach(corbeilleIcon => {
-                        //Ecouter l'événement click pour suppression des travaux
-                        corbeilleIcon.addEventListener("click", function (e) {
-                            // Eviter la propagation du click
-                            e.stopPropagation();
-                            // transformer le comportement par défaut de la soumission des données via le formulaire
-                            e.preventDefault();
-                            // récupérer l'identifiant du travail cliqué
-                            const id = this.closest("figure").dataset.id;
-
-                            // supprimer les éléments avec la méthode fetch DELETE
-                            fetch(`http://localhost:5678/api/works/${id}`, {
-                                method: 'DELETE',
-                                body: JSON.stringify({ id: id }),
-                                headers: { 'Accept': 'application/json',
-                                            'authorization': `Bearer ${user}`,
-                                            'Content-Type': 'application/json' }
-                            }).then(() => {
-                                // Supprimer l'élément parent "figure" du DOM
-                                const figure = this.closest("figure");
-                                figure.remove();
-
-                                // Supprimer l'élément correspondant dans la galerie principale (hors modale)
-                                // Lier l'id de l'élément supprimé au code html
-                                const galleryItem = document.querySelector(`[data-id="${id}"]`);
-
-                                // si élément supprimer le retirer de la galerie principale
-                                if (galleryItem) {
-                                    console.log("hello2");
-                                    galleryItem.remove();
-                                    // Déclencher un événement personnalisé "workDeleted"
-                                    gallery.dispatchEvent(new CustomEvent("workDeleted", { detail: { id: id } }));
-                                }
-                            });
-                        });
-                    });
-                });
-           // };    
+           buildModalGallery();   
         });   
     });
 
