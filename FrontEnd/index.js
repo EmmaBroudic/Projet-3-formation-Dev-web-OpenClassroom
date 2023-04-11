@@ -14,8 +14,6 @@ et supprimer de la galerie les éléments qui auront été supprimés dans la mo
 Ces fonctionnalités ne seront accessibles qu'à l'utilisateur connecté*/
 gallery.addEventListener("workDeleted", (e) => {
 
-    console.log("test-quatre");
-
     // Récupération de l'id du travail supprimé
     const id = e.detail.id;
 
@@ -38,15 +36,12 @@ gallery.addEventListener("WorkAdd", (e) => {
 
     // Récupération de l'id du travail ajouté
     const id = e.detail.id;
-    console.log(id);
 
     // Récupération de l'image du travail ajouté
     const img = e.detail.img;
-    console.log(img);
     
     // Récupération du titre du travail ajouté
     const titl = e.detail.titl;
-    console.log(titl);
 
     // Création d'un nouvel élément figure
     const newFigure = document.createElement("figure");
@@ -102,7 +97,6 @@ works.forEach(work => {
 // Récupération du token dans le local Storage
 
 const user = window.localStorage.getItem("token");
-console.log(user);
 
 // Lier les élements HTML login et logout au script JS
 const login = document.querySelector(".login-tab");
@@ -119,6 +113,7 @@ if (user) {
 
     // faire disparaître les filtres
     const filtres = document.querySelector(".filtres-bloc");
+    
     //const mesFiltres = document.querySelector(".filtres-bloc");
     filtres.innerHTML = "";
 
@@ -258,62 +253,63 @@ if (user) {
                 });
            }
 
+           // Appeller la fonction qui construit la galerie modale
            buildModalGallery();
 
+           // Création d'une fonction pour l'affichage du formulaire et l'envoi des données
            async function envoiDonneesFormulaire() { 
-            // Changer le contenu de la modale après le click sur le bouton ajouter photo
-            //  Ecouter l'événement click pour ouvrir la modale
-            boutonAjoutPhoto.addEventListener("click", (e) => {
-                // empêcher la propagation de l'événement "click"
-                e.stopPropagation();
+                // Changer le contenu de la modale après le click sur le bouton ajouter photo
+                //  Ecouter l'événement click pour ouvrir la modale
+                boutonAjoutPhoto.addEventListener("click", (e) => {
+                    // empêcher la propagation de l'événement "click" et modifier le comportement par défaut
+                    e.stopPropagation();
+                    e.preventDefault();
 
-                e.preventDefault();
-
-                // transformer le contenu de la modale pour afficher le formulaire d'ajout photo
-                titreGallery.innerHTML = "Ajout photo";
-                galleryModal.style.display = "none";
-                formulaireModal.style.display = "flex";
-                boutonAjoutPhoto.style.display = "none";
-                boutonAjoutPhotoValider.style.display = "block";
-                supprP.innerHTML = "";
-                boutonRetour.style.display = "flex";
+                    // transformer le contenu de la modale pour afficher le formulaire d'ajout photo
+                    titreGallery.innerHTML = "Ajout photo";
+                    galleryModal.style.display = "none";
+                    formulaireModal.style.display = "flex";
+                    boutonAjoutPhoto.style.display = "none";
+                    boutonAjoutPhotoValider.style.display = "block";
+                    supprP.innerHTML = "";
+                    boutonRetour.style.display = "flex";
   
-                // Création d'une variable liée à l'HTML à l'input d'ajout d'image
-                let imageInput = document.getElementById("input-photo");
+                    // Création d'une variable liée à l'HTML à l'input d'ajout d'image
+                    let imageInput = document.getElementById("input-photo");
 
-                // Création d'une variable liée à l'HTML qui fait apparaître le bouton d'ajout photo
-                const labelImageInput = document.getElementById("label-input-photo");
+                    // Création d'une variable liée à l'HTML qui fait apparaître le bouton d'ajout photo
+                    const labelImageInput = document.getElementById("label-input-photo");
 
-                /* Création de variables liées à l'HTML pour faire apparaître la miniature
-                et transformer le fond de la zone ajout photo une fois l'image chargée */
-                const text = document.getElementById("text-ajout");
-                const preview = document.getElementById("preview");
-                const fond = document.getElementById("ajout-img");
+                    /* Création de variables liées à l'HTML pour faire apparaître la miniature
+                    et transformer le fond de la zone ajout photo une fois l'image chargée */
+                    const text = document.getElementById("text-ajout");
+                    const preview = document.getElementById("preview");
+                    const fond = document.getElementById("ajout-img");
                 
-                // Chargement de l'image -> apparaît en miniature
-                // Ecouter l'événement ajout de l'image
-                imageInput.addEventListener("change", () => {
-                const file = imageInput.files[0];
-                const reader = new FileReader();
+                    // Chargement de l'image -> apparaît en miniature
+                    // Ecouter l'événement ajout de l'image
+                    imageInput.addEventListener("change", () => {
+                    const file = imageInput.files[0];
+                    const reader = new FileReader();
                 
-                // Ecouter l'événement chargement de l'image
-                reader.addEventListener("load", () => {
-                    preview.setAttribute("src", reader.result);
+                    // Ecouter l'événement chargement de l'image
+                    reader.addEventListener("load", () => {
+                        preview.setAttribute("src", reader.result);
+                    });
+                
+                    // si image charger, transformation des CSS pour faire apparaître la miniature et changer le fond
+                    if (file) {
+                        imageInput.style.display = "none";
+                        labelImageInput.style.display = "none";
+                        text.style.display ="none";
+                        preview.style.width = "auto";
+                        preview.style.height = "115px";
+                        fond.style.backgroundColor = "rgba(0, 0, 255, 0.4)";
+                        fond.style.padding = "0";
+                        boutonAjoutPhotoValider.style.backgroundColor = "#1D6154";
+                        reader.readAsDataURL(file);
+                    }
                 });
-                
-                // si image charger, transformation des CSS pour faire apparaître la miniature et changer le fond
-                if (file) {
-                    imageInput.style.display = "none";
-                    labelImageInput.style.display = "none";
-                    text.style.display ="none";
-                    preview.style.width = "auto";
-                    preview.style.height = "115px";
-                    fond.style.backgroundColor = "rgba(0, 0, 255, 0.4)";
-                    fond.style.padding = "0";
-                    boutonAjoutPhotoValider.style.backgroundColor = "#1D6154";
-                    reader.readAsDataURL(file);
-                }
-            });
 
             
                 // click sur le bouton Valider - méthode fetch envoi données à l'API
@@ -323,28 +319,17 @@ if (user) {
                     e.preventDefault();
 
                     // Eviter la propagation du click
-                    e.stopPropagation();
-
-                    //e.target();
+                    e.stopImmediatePropagation();
 
                     // Créer des variables liées aux inputs en HTML
                     let titleInput = document.getElementById("title");
                     let categoryInput = document.getElementById("category");
-
-                    // test console
-                    console.log(imageInput, titleInput, categoryInput);
                         
                     // Créer un objet FormData pour stocker les données
                     let formData = new FormData();
                     formData.append("image", imageInput.files[0]);
                     formData.append("title", titleInput.value);
                     formData.append("category", categoryInput.value);
-
-                    // tests console
-                    console.log(formData, "hello");
-                    console.log(user);
-
-                    //boutonAjoutPhotoValider.setAttribute('disabled', false);
                     
                     // Envoyer les données dans l'API avec la méthode POST
                     fetch("http://localhost:5678/api/works", {
@@ -360,7 +345,6 @@ if (user) {
                         // Vérifier si la réponse est ok
                         if(resp.ok) {
                         // Traiter la réponse de l'API
-                        console.log("ok");
                         // Message pour l'utilisateur
                         alert("Ajout réussi !");
                         e.stopPropagation();
@@ -368,6 +352,9 @@ if (user) {
                         imageInput.value = null;
                         imageInput.style.display = "block";
                         labelImageInput.style.display = "block";
+
+                        // Réinitialiser le formulaire
+                        formulaireModal.reset();
 
                         // Transformer les données au format JSON pour qu'elles soient reçues par l'API
                         return resp.json();
@@ -382,9 +369,6 @@ if (user) {
 
                     // Traiter la réponse de l'API
                     .then(data => {
-                        // Verif
-                        console.log(data);
-
                         /* créer des constantes liées à chaque élément de l'ajout de travail pour pouvoir
                         actualiser le DOM de la galerie principale hors modale */
                         const id = data.id;
@@ -392,22 +376,13 @@ if (user) {
                         const titl = data.title;
                         const cat = data.categoryId; // ou data["_id"], selon la structure de la réponse de l'API
                         console.log(`Identifiant généré : ${id}`);
-                        console.log(id);
-                        //boutonAjoutPhotoValider.setAttribute('disabled', true);
 
                         if (id) {
-                            console.log("test");
-                            console.log(id);
-                            console.log(titl);
-                            console.log(cat);
-                            console.log(img);
-
                             /* Déclenchement d'un événement personnalisé pour actualiser le DOM
                             dans la galerie principale hors modale */
                             const actuGalerie = new CustomEvent("WorkAdd", { detail: { id, img, titl, cat } });
                             gallery.dispatchEvent(actuGalerie);
-                          }
-
+                        }
                     })
                         
                     // Gérer les erreurs
@@ -415,30 +390,25 @@ if (user) {
                         console.error(error);
                         alert("Echec");
                     });
-
                 });            
             });
         }
         
-        
-
         // Rendre fonctionnel le bouton retour
         boutonRetour.addEventListener("click", (e) => {
-            e.stopPropagation();
+            e.stopImmediatePropagation();
             e.preventDefault();
+            // Appeler la fonction construction de la galerie
             buildModalGallery();
-            //formulaireModal.style.display = "none";
+            // affichage de la galerie
             titreGallery.innerHTML = "Galerie photo";
             galleryModal.style.display = "grid";
             boutonAjoutPhoto.style.display = "block";
-            //boutonAjoutPhotoValider.style.display = "none";
-            supprP.innerHTML = "Supprimer la galerie";
-            //effacer le bouton retour
-            //boutonRetour.style.display = "none";                             
+            supprP.innerHTML = "Supprimer la galerie";                          
         });
 
-        envoiDonneesFormulaire();
-        
+        // appeler la fonction formulaire
+        envoiDonneesFormulaire();     
         });   
     });
     
