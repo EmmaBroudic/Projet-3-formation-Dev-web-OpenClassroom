@@ -284,6 +284,7 @@ if (user) {
                     et transformer le fond de la zone ajout photo une fois l'image chargée */
                     const text = document.getElementById("text-ajout");
                     const preview = document.getElementById("preview");
+                    const previewDeux = document.getElementById("preview-deux");
                     const fond = document.getElementById("ajout-img");
                 
                     // Chargement de l'image -> apparaît en miniature
@@ -304,6 +305,7 @@ if (user) {
                         text.style.display ="none";
                         preview.style.width = "auto";
                         preview.style.height = "115px";
+                        previewDeux.style.display = "none";
                         fond.style.backgroundColor = "rgba(0, 0, 255, 0.4)";
                         fond.style.padding = "0";
                         boutonAjoutPhotoValider.style.backgroundColor = "#1D6154";
@@ -355,7 +357,8 @@ if (user) {
                         
                         text.style.display ="block";
                         preview.style.width = "block";
-                        preview.style.height = "30px";
+                        preview.style.height = "0%";
+                        previewDeux.style.display = "block";
                         fond.style.backgroundColor = "rgba(0, 0, 255, 0.1)";
                         //fond.style.padding = "0";
                         boutonAjoutPhotoValider.style.backgroundColor = "#1D6154";

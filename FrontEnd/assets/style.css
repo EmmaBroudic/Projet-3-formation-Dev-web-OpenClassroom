@@ -515,6 +515,12 @@ footer nav ul {
 	height: auto;
 }
 
+#preview-deux {
+	display: none;
+	width: 30px;
+	height: auto;
+}
+
 /* Propriétés des boutons modifier */
 
 .modifier {
