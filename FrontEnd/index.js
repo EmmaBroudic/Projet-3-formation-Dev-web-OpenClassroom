@@ -258,7 +258,6 @@ if (user) {
                 });
            }
 
-           
            buildModalGallery();
 
            async function envoiDonneesFormulaire() { 
@@ -345,6 +344,8 @@ if (user) {
                     console.log(formData, "hello");
                     console.log(user);
 
+                    //boutonAjoutPhotoValider.setAttribute('disabled', false);
+                    
                     // Envoyer les données dans l'API avec la méthode POST
                     fetch("http://localhost:5678/api/works", {
                         method: 'POST',
@@ -371,7 +372,6 @@ if (user) {
                         // Transformer les données au format JSON pour qu'elles soient reçues par l'API
                         return resp.json();
                         
-                        
                         } else {
                         // informer l'utilisateur de l'échec de la requête
                         alert("Le formulaire n'a pas été complété correctement");
@@ -393,6 +393,7 @@ if (user) {
                         const cat = data.categoryId; // ou data["_id"], selon la structure de la réponse de l'API
                         console.log(`Identifiant généré : ${id}`);
                         console.log(id);
+                        //boutonAjoutPhotoValider.setAttribute('disabled', true);
 
                         if (id) {
                             console.log("test");
@@ -415,15 +416,11 @@ if (user) {
                         alert("Echec");
                     });
 
-                    /*.finally {
-                    // réactiver le bouton d'envoi de données une fois que la requête est terminée
-                    boutonAjoutPhoto.setAttribute('disabled', '');
-                  }*/
                 });            
             });
         }
         
-        envoiDonneesFormulaire();
+        
 
         // Rendre fonctionnel le bouton retour
         boutonRetour.addEventListener("click", (e) => {
@@ -433,15 +430,18 @@ if (user) {
             //formulaireModal.style.display = "none";
             titreGallery.innerHTML = "Galerie photo";
             galleryModal.style.display = "grid";
-            boutonAjoutPhoto.style.display = "flex";
+            boutonAjoutPhoto.style.display = "block";
             //boutonAjoutPhotoValider.style.display = "none";
             supprP.innerHTML = "Supprimer la galerie";
             //effacer le bouton retour
             //boutonRetour.style.display = "none";                             
-            });
+        });
 
+        envoiDonneesFormulaire();
+        
         });   
     });
+    
 
     // Fermer la modale
     modalClose.forEach(close => {
