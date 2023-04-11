@@ -352,6 +352,13 @@ if (user) {
                         imageInput.value = null;
                         imageInput.style.display = "block";
                         labelImageInput.style.display = "block";
+                        
+                        text.style.display ="block";
+                        preview.style.width = "block";
+                        preview.style.height = "30px";
+                        fond.style.backgroundColor = "rgba(0, 0, 255, 0.1)";
+                        //fond.style.padding = "0";
+                        boutonAjoutPhotoValider.style.backgroundColor = "#1D6154";
 
                         // Réinitialiser le formulaire
                         formulaireModal.reset();
