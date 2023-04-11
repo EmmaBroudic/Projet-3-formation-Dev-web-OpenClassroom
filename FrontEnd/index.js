@@ -138,6 +138,8 @@ if (user) {
             // empêcher la propagation de l'événement "click"
             e.stopPropagation();
 
+            e.preventDefault();
+
             // Lier la constante target à la modale en HTML
             const target = document.querySelector(trigger.getAttribute("data-modal-target"));
             
@@ -174,6 +176,21 @@ if (user) {
 
             //effacer le bouton retour
             boutonRetour.style.display = "none";
+
+            // Rendre fonctionnel le bouton retour
+            boutonRetour.addEventListener("click", (e) => {
+                e.stopPropagation();
+                e.preventDefault();
+                //buildModalGallery();
+                formulaireModal.style.display = "none";
+                titreGallery.innerHTML = "Galerie photo 2";
+                galleryModal.style.display = "grid";
+                boutonAjoutPhoto.style.display = "flex";
+                boutonAjoutPhotoValider.style.display = "none";
+                supprP.innerHTML = "Supprimer la galerie";
+                //effacer le bouton retour
+                boutonRetour.style.display = "none";                                    
+            });
 
             // Afficher les travaux au sein de la modale "galerie photos"
 
@@ -255,11 +272,14 @@ if (user) {
                 });
            }
 
+           async function envoiDonneesFormulaire() { 
             // Changer le contenu de la modale après le click sur le bouton ajouter photo
             //  Ecouter l'événement click pour ouvrir la modale
             boutonAjoutPhoto.addEventListener("click", (e) => {
                 // empêcher la propagation de l'événement "click"
                 e.stopPropagation();
+
+                e.preventDefault();
 
                 // transformer le contenu de la modale pour afficher le formulaire d'ajout photo
                 titreGallery.innerHTML = "Ajout photo";
@@ -269,33 +289,12 @@ if (user) {
                 boutonAjoutPhotoValider.style.display = "block";
                 supprP.innerHTML = "";
                 boutonRetour.style.display = "flex";
-
-                boutonRetour.addEventListener("click", (e) => {
-                    e.stopPropagation();
-                    e.preventDefault();
-
-                    // Vider la galerie
-                    galleryModal.querySelectorAll('figure').forEach(el => el.remove());
-                
-                    buildModalGallery();
-                    formulaireModal.style.display = "none";
-                    titreGallery.innerHTML = "Galerie photo 2";
-                    galleryModal.style.display = "grid";
-                    boutonAjoutPhoto.style.display = "flex";
-                    boutonAjoutPhotoValider.style.display = "none";
-                    supprP.innerHTML = "Supprimer la galerie";
-                    //effacer le bouton retour
-                    boutonRetour.style.display = "none";
-                });
-                
+  
                 // Création d'une variable liée à l'HTML à l'input d'ajout d'image
                 let imageInput = document.getElementById("input-photo");
 
                 // Création d'une variable liée à l'HTML qui fait apparaître le bouton d'ajout photo
                 const labelImageInput = document.getElementById("label-input-photo");
-
-                // créer une variable liée au formulaire de la modale afin de permettre l'envoi de nouveaux travaux à l'API
-                let formAjoutPhoto = document.forms.namedItem("ajout");
 
                 /* Création de variables liées à l'HTML pour faire apparaître la miniature
                 et transformer le fond de la zone ajout photo une fois l'image chargée */
@@ -327,15 +326,18 @@ if (user) {
                     reader.readAsDataURL(file);
                 }
             });
-                    
+
+            
                 // click sur le bouton Valider - méthode fetch envoi données à l'API
-                formAjoutPhoto.addEventListener("submit", function (e) {
+                formulaireModal.addEventListener("submit", function (e) {
 
                     // transformer le comportement par défaut de la soumission des données via le formulaire
                     e.preventDefault();
 
                     // Eviter la propagation du click
                     e.stopPropagation();
+
+                    //e.target();
 
                     // Créer des variables liées aux inputs en HTML
                     let titleInput = document.getElementById("title");
@@ -376,7 +378,6 @@ if (user) {
                         imageInput.value = null;
                         imageInput.style.display = "block";
                         labelImageInput.style.display = "block";
-                        //console.log(file);
 
                         // Transformer les données au format JSON pour qu'elles soient reçues par l'API
                         return resp.json();
@@ -385,6 +386,8 @@ if (user) {
                         } else {
                         // informer l'utilisateur de l'échec de la requête
                         alert("Le formulaire n'a pas été complété correctement");
+                        e.stopPropagation();
+                        e.preventDefault();
                         }
                     })
 
@@ -422,10 +425,11 @@ if (user) {
                         console.error(error);
                         alert("Echec");
                     });
-                });
+                });            
             });
-
-           buildModalGallery();   
+        }
+            envoiDonneesFormulaire();
+            buildModalGallery();
         });   
     });
 
