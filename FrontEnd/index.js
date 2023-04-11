@@ -169,33 +169,19 @@ if (user) {
             //créer une constante pour lier le bouton retour à l'HTML
             const boutonRetour = document.querySelector("#modal-retour");
 
-            // Invisibiliser le contenu HTML de la gallerie modale et du formulaire
-            galleryModal.innerHTML = "";
-            formulaireModal.style.display = "none";
-            boutonAjoutPhotoValider.style.display = "none";
-
-            //effacer le bouton retour
-            boutonRetour.style.display = "none";
-
-            // Rendre fonctionnel le bouton retour
-            boutonRetour.addEventListener("click", (e) => {
-                e.stopPropagation();
-                e.preventDefault();
-                //buildModalGallery();
-                formulaireModal.style.display = "none";
-                titreGallery.innerHTML = "Galerie photo 2";
-                galleryModal.style.display = "grid";
-                boutonAjoutPhoto.style.display = "flex";
-                boutonAjoutPhotoValider.style.display = "none";
-                supprP.innerHTML = "Supprimer la galerie";
-                //effacer le bouton retour
-                boutonRetour.style.display = "none";                                    
-            });
-
             // Afficher les travaux au sein de la modale "galerie photos"
 
             // Fonction qui construit la galerie modale et effectue la suppression des travaux
             async function buildModalGallery() {
+
+                // Invisibiliser le contenu HTML de la gallerie modale et du formulaire
+                galleryModal.innerHTML = "";
+                formulaireModal.style.display = "none";
+                boutonAjoutPhotoValider.style.display = "none";
+
+                //effacer le bouton retour
+                boutonRetour.style.display = "none";
+
                 // Récupérer les données via l'API
                 const reponse = await fetch("http://localhost:5678/api/works");
                 const pieces = await reponse.json();
@@ -271,6 +257,9 @@ if (user) {
                     });
                 });
            }
+
+           
+           buildModalGallery();
 
            async function envoiDonneesFormulaire() { 
             // Changer le contenu de la modale après le click sur le bouton ajouter photo
@@ -425,11 +414,32 @@ if (user) {
                         console.error(error);
                         alert("Echec");
                     });
+
+                    /*.finally {
+                    // réactiver le bouton d'envoi de données une fois que la requête est terminée
+                    boutonAjoutPhoto.setAttribute('disabled', '');
+                  }*/
                 });            
             });
         }
-            envoiDonneesFormulaire();
+        
+        envoiDonneesFormulaire();
+
+        // Rendre fonctionnel le bouton retour
+        boutonRetour.addEventListener("click", (e) => {
+            e.stopPropagation();
+            e.preventDefault();
             buildModalGallery();
+            //formulaireModal.style.display = "none";
+            titreGallery.innerHTML = "Galerie photo";
+            galleryModal.style.display = "grid";
+            boutonAjoutPhoto.style.display = "flex";
+            //boutonAjoutPhotoValider.style.display = "none";
+            supprP.innerHTML = "Supprimer la galerie";
+            //effacer le bouton retour
+            //boutonRetour.style.display = "none";                             
+            });
+
         });   
     });
 
