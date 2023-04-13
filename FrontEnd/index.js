@@ -69,28 +69,32 @@ gallery.addEventListener("WorkAdd", (e) => {
     gallery.appendChild(newFigure);
 });
 
-// Afficher tous les travaux dans la galerie principale (hors modale)
-works.forEach(work => {
+async function galeriePrincipale() {
+    // Afficher tous les travaux dans la galerie principale (hors modale)
+    works.forEach(work => {
 
-    // Création d'une constante figure (élément parent) qui contiendra les éléments (enfants) image et figcaption
-    const figure = document.createElement("figure");
+        // Création d'une constante figure (élément parent) qui contiendra les éléments (enfants) image et figcaption
+        const figure = document.createElement("figure");
 
-    // Création de constantes pour les éléments image et titre (figcaption)
-    const image = document.createElement("img");
-    const figcaption = document.createElement("figcaption");
-    
-    // lier chaque élement récupéré via l'API au code HTML
-    image.src = work.imageUrl;
-    figcaption.textContent = work.title;
-    figure.dataset.id = work.id;
+        // Création de constantes pour les éléments image et titre (figcaption)
+        const image = document.createElement("img");
+        const figcaption = document.createElement("figcaption");
+        
+        // lier chaque élement récupéré via l'API au code HTML
+        image.src = work.imageUrl;
+        figcaption.textContent = work.title;
+        figure.dataset.id = work.id;
 
-    // créer le DOM
-    // Element parent du DOM
-    gallery.appendChild(figure);
-    // ELements enfants du DOM
-    figure.appendChild(image);
-    figure.appendChild(figcaption);
-});
+        // créer le DOM
+        // Element parent du DOM
+        gallery.appendChild(figure);
+        // ELements enfants du DOM
+        figure.appendChild(image);
+        figure.appendChild(figcaption);
+    });
+}
+
+galeriePrincipale();
 
 // Options login et log out
 
@@ -98,14 +102,16 @@ works.forEach(work => {
 
 const user = window.localStorage.getItem("token");
 
-// Lier les élements HTML login et logout au script JS
+// Lier les élements HTML login et logout + barre noire top au script JS
 const login = document.querySelector(".login-tab");
 const logout = document.querySelector(".logout-tab");
+const barreTop = document.querySelector("#balise-top");
 
 // Vérifier si l'utilisateur est connecté
 if (user) {
 // Afficher l'onglet logout
     logout.style.display = "block";
+    barreTop.style.display = "flex";
 
     // faire disparaître le titre "mes projets"
     const modifProjets = document.querySelector(".mes-projets-titre");
@@ -529,7 +535,7 @@ if (user) {
     const boutonTousLesTravaux = document.querySelector(".btn-tous");
 
     boutonTousLesTravaux.addEventListener("click", function () {
-        location.reload();
+        galeriePrincipale();
     });
 }
 
